@@ -15,6 +15,7 @@
 		2BB036322CF8DEC00030B376 /* ImageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036312CF8DEC00030B376 /* ImageViewCell.swift */; };
 		2BB036342CF8DFC40030B376 /* ImageCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */; };
 		2BB036362CF8E43C0030B376 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036352CF8E43C0030B376 /* NetworkService.swift */; };
+		2BB036382CF8E63C0030B376 /* ImageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036372CF8E63C0030B376 /* ImageInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		2BB036312CF8DEC00030B376 /* ImageViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCell.swift; sourceTree = "<group>"; };
 		2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewModel.swift; sourceTree = "<group>"; };
 		2BB036352CF8E43C0030B376 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		2BB036372CF8E63C0030B376 /* ImageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
 				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
 				2BB036352CF8E43C0030B376 /* NetworkService.swift */,
+				2BB036372CF8E63C0030B376 /* ImageInfo.swift */,
 			);
 			path = Gallery_App;
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 				2BB036322CF8DEC00030B376 /* ImageViewCell.swift in Sources */,
 				2BB036222CF8DD9A0030B376 /* ImageCollectionViewController.swift in Sources */,
 				2BB036342CF8DFC40030B376 /* ImageCollectionViewModel.swift in Sources */,
+				2BB036382CF8E63C0030B376 /* ImageInfo.swift in Sources */,
 				2BB0361E2CF8DD9A0030B376 /* AppDelegate.swift in Sources */,
 				2BB036362CF8E43C0030B376 /* NetworkService.swift in Sources */,
 				2BB036202CF8DD9A0030B376 /* SceneDelegate.swift in Sources */,
