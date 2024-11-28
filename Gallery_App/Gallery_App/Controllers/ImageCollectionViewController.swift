@@ -51,4 +51,13 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
         cell.loadImage(with: imageUrlString)
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let imageUrlString = viewModel.images[indexPath.item].urls.regular
+        let vc = ImageDetailsViewController()
+        let vm = ImageDetailsViewModel()
+        vm.fetchImage(imageUrlString)
+        vc.viewModel = vm
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
