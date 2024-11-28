@@ -7,15 +7,20 @@
 
 import Foundation
 class ImageDetailsViewModel {
-    var imageUrlString: String
     var imageData: Data!
     var updateView: () -> () = {}
     
-    init(_ imageUrlString: String) {
-        self.imageUrlString = imageUrlString
-    }
-    
-    func fetchImage() {
-        
+    func fetchImage(_ imageUrlString: String) {
+        NetworkService.shared.fetchData(with: imageUrlString) { result in
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.imageData = data
+                    self.updateView()
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
