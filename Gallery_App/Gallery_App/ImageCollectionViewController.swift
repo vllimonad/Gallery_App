@@ -8,10 +8,12 @@
 import UIKit
 
 class ImageCollectionViewController: UIViewController {
+    var viewModel: ImageCollectionViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        viewModel = ImageCollectionViewModel()
+        viewModel.fetchImages()
     }
 
 
