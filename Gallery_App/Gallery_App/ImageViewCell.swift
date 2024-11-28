@@ -20,3 +20,18 @@ class ImageViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+extension ImageViewCell {
+    func loadImage(with urlString: String) {
+        NetworkService.shared.fetchData(with: urlString) { result in
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.imageView.image = UIImage(data: data)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+}

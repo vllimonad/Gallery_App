@@ -15,6 +15,9 @@ class ImageCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = ImageCollectionViewModel()
+        viewModel.updateView = {
+            self.collectionView.reloadData()
+        }
         viewModel.fetchImages()
         setupLayout()
         setupCollectionView()
@@ -44,6 +47,8 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
+        let imageUrlString = viewModel.images[indexPath.item].urls.regular
+        cell.loadImage(with: imageUrlString)
         return cell
     }
 }
