@@ -62,18 +62,74 @@
 		2BB0361C2CF8DD9A0030B376 /* Gallery_App */ = {
 			isa = PBXGroup;
 			children = (
-				2BB0361D2CF8DD9A0030B376 /* AppDelegate.swift */,
-				2BB0361F2CF8DD9A0030B376 /* SceneDelegate.swift */,
-				2BB036212CF8DD9A0030B376 /* ImageCollectionViewController.swift */,
-				2BB036262CF8DD9B0030B376 /* Assets.xcassets */,
-				2BB036282CF8DD9B0030B376 /* LaunchScreen.storyboard */,
 				2BB0362B2CF8DD9B0030B376 /* Info.plist */,
-				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
-				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
-				2BB036352CF8E43C0030B376 /* NetworkService.swift */,
-				2BB036372CF8E63C0030B376 /* ImageInfo.swift */,
+				2BB0363A2CF8F2720030B376 /* Controllers */,
+				2BB036392CF8F2630030B376 /* Application */,
+				2BB0363F2CF8F2A50030B376 /* Views */,
+				2BB0363E2CF8F29C0030B376 /* Services */,
+				2BB0363D2CF8F2910030B376 /* ViewModels */,
+				2BB0363C2CF8F2880030B376 /* Models */,
+				2BB0363B2CF8F27D0030B376 /* Resources */,
 			);
 			path = Gallery_App;
+			sourceTree = "<group>";
+		};
+		2BB036392CF8F2630030B376 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				2BB0361D2CF8DD9A0030B376 /* AppDelegate.swift */,
+				2BB0361F2CF8DD9A0030B376 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		2BB0363A2CF8F2720030B376 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036212CF8DD9A0030B376 /* ImageCollectionViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		2BB0363B2CF8F27D0030B376 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036262CF8DD9B0030B376 /* Assets.xcassets */,
+				2BB036282CF8DD9B0030B376 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2BB0363C2CF8F2880030B376 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036372CF8E63C0030B376 /* ImageInfo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2BB0363D2CF8F2910030B376 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BB0363E2CF8F29C0030B376 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036352CF8E43C0030B376 /* NetworkService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		2BB0363F2CF8F2A50030B376 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
