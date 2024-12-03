@@ -9,21 +9,25 @@ import UIKit
 
 class ImageCollectionViewController: UIViewController {
     var viewModel: ImageCollectionViewModel!
-    var collectionView: UICollectionView!
-    var layout: UICollectionViewFlowLayout!
+    private var collectionView: UICollectionView!
+    private var layout: UICollectionViewFlowLayout!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = ImageCollectionViewModel()
-        viewModel.updateView = {
-            self.collectionView.reloadData()
-        }
+        setupUpdateView()
         viewModel.fetchImages()
         setupLayout()
         setupCollectionView()
     }
     
-    func setupLayout() {
+    private func setupUpdateView() {
+        viewModel.updateView = {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    private func setupLayout() {
         layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: view.frame.width/3 - 2, height: view.frame.width/3 - 2)
@@ -31,7 +35,7 @@ class ImageCollectionViewController: UIViewController {
         layout.minimumInteritemSpacing = 2
     }
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
         collectionView.register(ImageViewCell.self, forCellWithReuseIdentifier: "ImageCell")
         collectionView.dataSource = self

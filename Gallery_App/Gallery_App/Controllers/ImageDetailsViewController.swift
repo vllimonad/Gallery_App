@@ -9,25 +9,29 @@ import UIKit
 
 class ImageDetailsViewController: UIViewController {
     var viewModel: ImageDetailsViewModel!
-    let imageView = UIImageView()
+    private let imageView = UIImageView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.updateImage = {
-            self.imageView.image = UIImage(data: self.viewModel.imageData)
-        }
+        setupUpdateImage()
         setupImageView()
         setupGestures()
         view.backgroundColor = .black
     }
+    
+    private func setupUpdateImage() {
+        viewModel.updateImage = {
+            self.imageView.image = UIImage(data: self.viewModel.imageData)
+        }
+    }
         
-    func setupImageView() {
+    private func setupImageView() {
         imageView.frame = view.bounds
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
     }
     
-    func setupGestures() {
+    private func setupGestures() {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeRight.direction = .right
         view.addGestureRecognizer(swipeRight)
@@ -37,7 +41,7 @@ class ImageDetailsViewController: UIViewController {
         view.addGestureRecognizer(swipeLeft)
     }
     
-    @objc func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
+    @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
         case .right: viewModel.swipedRight()
         case .left: viewModel.swipedLeft()
