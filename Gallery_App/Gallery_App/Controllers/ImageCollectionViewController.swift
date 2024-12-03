@@ -56,6 +56,8 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
         let imageUrlString = viewModel.images[indexPath.item].urls.regular
         let vc = ImageDetailsViewController()
         let vm = ImageDetailsViewModel()
+        vm.images = viewModel.images
+        vm.imageIndex = indexPath.item
         vm.fetchImage(imageUrlString)
         vc.viewModel = vm
         navigationController?.pushViewController(vc, animated: true)
