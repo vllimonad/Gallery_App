@@ -10,15 +10,39 @@ import UIKit
 class ImageDetailsViewController: UIViewController {
     var viewModel: ImageDetailsViewModel!
     private let imageView = UIImageView()
+    private let imageLabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        label.textColor = .white
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUpdateImage()
+        setupUpdateImageDescription()
         setupImageView()
+        setupImageLabel()
         setupGestures()
         setupHeartButton()
-        setupActions()
-        view.backgroundColor = .black
+        setupUpdateHeartButtonImage()
+    }
+        
+    private func setupImageView() {
+        imageView.frame = view.bounds
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .black
+        view.addSubview(imageView)
+    }
+    
+    private func setupImageLabel() {
+        view.addSubview(imageLabel)
+        NSLayoutConstraint.activate([
+            imageLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            imageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            imageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+        ])
     }
     
     private func setupHeartButton() {
@@ -31,11 +55,20 @@ class ImageDetailsViewController: UIViewController {
             self.imageView.image = UIImage(data: self.viewModel.imageData)
         }
     }
-        
-    private func setupImageView() {
-        imageView.frame = view.bounds
-        imageView.contentMode = .scaleAspectFit
-        view.addSubview(imageView)
+    
+    private func setupUpdateImageDescription() {
+        viewModel.updateImageDescription = { description in
+            self.imageLabel.text = description
+        }
+    }
+    
+    private func setupUpdateHeartButtonImage() {
+        viewModel.markAsFavourite = {
+            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+        }
+        viewModel.removeFavouriteMark = {
+            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+        }
     }
     
     private func setupGestures() {
@@ -58,14 +91,5 @@ class ImageDetailsViewController: UIViewController {
     
     @objc func heartButtonPressed(){
         viewModel.heartButtonPressed()
-    }
-            
-    private func setupActions() {
-        viewModel.markAsFavourite = {
-            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-        }
-        viewModel.removeFavouriteMark = {
-            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
-        }
     }
 }
