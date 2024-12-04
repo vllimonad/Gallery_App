@@ -17,20 +17,13 @@ class ImageDetailsViewController: UIViewController {
         setupImageView()
         setupGestures()
         setupHeartButton()
+        setupActions()
         view.backgroundColor = .black
-    }
-    
-    @objc func heartButtonPressed(_ button: UIBarButtonItem){
-        if viewModel.heartButtonPressed() {
-            button.image = UIImage(systemName: "heart")
-        } else {
-            button.image = UIImage(systemName: "heart.fill")
-        }
     }
     
     private func setupHeartButton() {
         let image = UIImage(systemName: "heart")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(heartButtonPressed(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(heartButtonPressed))
     }
     
     private func setupUpdateImage() {
@@ -60,6 +53,19 @@ class ImageDetailsViewController: UIViewController {
         case .right: viewModel.swipedRight()
         case .left: viewModel.swipedLeft()
         default: break
+        }
+    }
+    
+    @objc func heartButtonPressed(){
+        viewModel.heartButtonPressed()
+    }
+            
+    private func setupActions() {
+        viewModel.markAsFavourite = {
+            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+        }
+        viewModel.removeFavouriteMark = {
+            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
         }
     }
 }

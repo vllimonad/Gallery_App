@@ -8,10 +8,11 @@
 import Foundation
 class ImageDetailsViewModel {
     var images: [ImageInfo]!
-    var favouriteImagesIds = [String]()
     var imageIndex: Int!
     var imageData: Data!
     var updateImage: () -> () = {}
+    var markAsFavourite: () -> () = {}
+    var removeFavouriteMark: () -> () = {}
     
     func fetchImage(_ imageUrlString: String) {
         NetworkService.shared.fetchData(with: imageUrlString) { result in
@@ -20,6 +21,7 @@ class ImageDetailsViewModel {
                 DispatchQueue.main.async {
                     self.imageData = data
                     self.updateImage()
+                    self.check()
                 }
             case .failure(let error):
                 print(error)
@@ -41,15 +43,23 @@ class ImageDetailsViewModel {
         }
     }
     
-    func heartButtonPressed() -> Bool {
+    func check() {
         let id = images[imageIndex].id
-        if favouriteImagesIds.contains(id) {
-            guard let index = favouriteImagesIds.firstIndex(of: id) else { return true }
-            favouriteImagesIds.remove(at: index)
-            return true
+        if DataManager.shared.favouriteImagesIds.contains(id) {
+            markAsFavourite()
         } else {
-            favouriteImagesIds.append(id)
-            return false
+            removeFavouriteMark()
+        }
+    }
+    
+    func heartButtonPressed() {
+        let id = images[imageIndex].id
+        if DataManager.shared.favouriteImagesIds.contains(id) {
+            DataManager.shared.removeFromFavourite(id)
+            removeFavouriteMark()
+        } else {
+            DataManager.shared.addToFavourite(id)
+            markAsFavourite()
         }
     }
 }
