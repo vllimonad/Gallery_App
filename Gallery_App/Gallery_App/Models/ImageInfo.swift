@@ -14,4 +14,5 @@ struct ImageInfo: Codable {
 
 struct URLType: Codable {
     var regular: String
+    var thumb: String
 }

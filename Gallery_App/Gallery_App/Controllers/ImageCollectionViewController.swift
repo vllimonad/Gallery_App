@@ -21,6 +21,11 @@ class ImageCollectionViewController: UIViewController {
         setupCollectionView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        collectionView.reloadData()
+    }
+    
     private func setupUpdateView() {
         viewModel.updateView = {
             self.collectionView.reloadData()
@@ -51,11 +56,13 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
-        let imageUrlString = viewModel.images[indexPath.item].urls.regular
+        let imageUrlString = viewModel.images[indexPath.item].urls.thumb
+        cell.loadImage(with: imageUrlString)
         if viewModel.isImageFavourite(indexPath) {
             cell.markAsFavourite()
+        } else {
+            cell.removeFavouriteMark()
         }
-        cell.loadImage(with: imageUrlString)
         return cell
     }
     
@@ -69,4 +76,5 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
         vc.viewModel = vm
         navigationController?.pushViewController(vc, animated: true)
     }
+    
 }

@@ -13,7 +13,7 @@ class ImageViewCell: UICollectionViewCell {
         let heart = UIImageView()
         heart.image = UIImage(systemName: "heart.fill")
         heart.tintColor = .white
-        heart.layer.opacity = 0
+        heart.layer.isHidden = true
         heart.translatesAutoresizingMaskIntoConstraints = false
         return heart
     }()
@@ -26,7 +26,9 @@ class ImageViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+}
+
+extension ImageViewCell {
     private func setupLayout() {
         addSubview(contentImageView)
         addSubview(heartImageView)
@@ -37,16 +39,6 @@ class ImageViewCell: UICollectionViewCell {
         ])
     }
     
-    func markAsFavourite() {
-        heartImageView.layer.opacity = 1
-    }
-    
-    func removeFromFavourite() {
-        heartImageView.layer.opacity = 1
-    }
-}
-
-extension ImageViewCell {
     func loadImage(with urlString: String) {
         NetworkService.shared.fetchData(with: urlString) { result in
             switch result {
@@ -58,5 +50,13 @@ extension ImageViewCell {
                 print(error)
             }
         }
+    }
+    
+    func markAsFavourite() {
+        heartImageView.isHidden = false
+    }
+    
+    func removeFavouriteMark() {
+        heartImageView.isHidden = true
     }
 }
