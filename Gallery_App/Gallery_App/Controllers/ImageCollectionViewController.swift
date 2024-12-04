@@ -52,6 +52,9 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
         let imageUrlString = viewModel.images[indexPath.item].urls.regular
+        if viewModel.isFavourite(indexPath) {
+            cell.markAsFavourite()
+        }
         cell.loadImage(with: imageUrlString)
         return cell
     }

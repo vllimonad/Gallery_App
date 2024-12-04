@@ -8,6 +8,7 @@
 import Foundation
 class ImageDetailsViewModel {
     var images: [ImageInfo]!
+    var favouriteImagesIds = [String]()
     var imageIndex: Int!
     var imageData: Data!
     var updateImage: () -> () = {}
@@ -37,6 +38,18 @@ class ImageDetailsViewModel {
         if imageIndex < images.count - 1 {
             imageIndex += 1
             fetchImage(images[imageIndex].urls.regular)
+        }
+    }
+    
+    func heartButtonPressed() -> Bool {
+        let id = images[imageIndex].id
+        if favouriteImagesIds.contains(id) {
+            guard let index = favouriteImagesIds.firstIndex(of: id) else { return true }
+            favouriteImagesIds.remove(at: index)
+            return true
+        } else {
+            favouriteImagesIds.append(id)
+            return false
         }
     }
 }

@@ -16,7 +16,21 @@ class ImageDetailsViewController: UIViewController {
         setupUpdateImage()
         setupImageView()
         setupGestures()
+        setupHeartButton()
         view.backgroundColor = .black
+    }
+    
+    @objc func heartButtonPressed(_ button: UIBarButtonItem){
+        if viewModel.heartButtonPressed() {
+            button.image = UIImage(systemName: "heart")
+        } else {
+            button.image = UIImage(systemName: "heart.fill")
+        }
+    }
+    
+    private func setupHeartButton() {
+        let image = UIImage(systemName: "heart")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(heartButtonPressed(_:)))
     }
     
     private func setupUpdateImage() {
