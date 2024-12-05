@@ -15,7 +15,7 @@ class ImageCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = ImageCollectionViewModel()
-        setupUpdateView()
+        setupInsertItems()
         viewModel.fetchImages()
         setupLayout()
         setupCollectionView()
@@ -26,9 +26,9 @@ class ImageCollectionViewController: UIViewController {
         collectionView.reloadData()
     }
     
-    private func setupUpdateView() {
-        viewModel.updateView = {
-            self.collectionView.reloadData()
+    private func setupInsertItems() {
+        viewModel.insertItems = { array in
+            self.collectionView.insertItems(at: array)
         }
     }
     
@@ -77,4 +77,7 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        viewModel.loadNextPage(indexPath)
+    }
 }
