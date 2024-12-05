@@ -9,7 +9,7 @@ import UIKit
 
 class ImageDetailsViewController: UIViewController {
     var viewModel: ImageDetailsViewModel!
-    private let imageView = UIImageView()
+    private var imageView: UIImageView!
     private let imageLabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -20,17 +20,18 @@ class ImageDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUpdateImage()
-        setupUpdateImageDescription()
         setupImageView()
         setupImageLabel()
         setupGestures()
         setupHeartButton()
+        setupUpdateImage()
+        setupUpdateImageDescription()
         setupUpdateHeartButtonImage()
         setupShowAlert()
     }
         
     private func setupImageView() {
+        imageView = UIImageView()
         imageView.frame = view.bounds
         imageView.contentMode = .scaleAspectFit
         imageView.backgroundColor = .black
@@ -76,7 +77,6 @@ class ImageDetailsViewController: UIViewController {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeRight.direction = .right
         view.addGestureRecognizer(swipeRight)
-        
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeLeft.direction = .left
         view.addGestureRecognizer(swipeLeft)

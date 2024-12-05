@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct ImageInfo: Codable {
+struct Image: Codable {
     var id: String
     var alt_description: String
     var urls: URLType

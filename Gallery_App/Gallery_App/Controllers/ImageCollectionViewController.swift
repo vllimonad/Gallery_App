@@ -36,9 +36,9 @@ class ImageCollectionViewController: UIViewController {
     private func setupLayout() {
         layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width/3 - 2, height: view.frame.width/3 - 2)
-        layout.minimumLineSpacing = 2
-        layout.minimumInteritemSpacing = 2
+        layout.itemSize = CGSize(width: view.frame.width/3 - 1, height: view.frame.width/3 - 1)
+        layout.minimumLineSpacing = 1
+        layout.minimumInteritemSpacing = 1
     }
     
     private func setupCollectionView() {
@@ -52,13 +52,13 @@ class ImageCollectionViewController: UIViewController {
     func setupShowAlert() {
         viewModel.showAlert = { error in
             let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
-            let action1 = UIAlertAction(title: "Reload", style: .default) { _ in
+            let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
                 self.viewModel.reloadView()
                 self.collectionView.reloadData()
             }
-            let action2 = UIAlertAction(title: "Ok", style: .default)
-            ac.addAction(action1)
-            ac.addAction(action2)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            ac.addAction(reloadAction)
+            ac.addAction(okAction)
             self.present(ac, animated: true)
         }
     }

@@ -7,7 +7,7 @@
 
 import Foundation
 class ImageDetailsViewModel {
-    var images: [ImageInfo]!
+    var images: [Image]!
     var imageIndex: Int!
     var imageData: Data!
     
@@ -18,7 +18,7 @@ class ImageDetailsViewModel {
     var showAlert: ((Error) -> ())!
     
     func fetchImage(_ imageUrlString: String) {
-        NetworkService.shared.fetchData(with: imageUrlString) { result in
+        NetworkManager.shared.fetchData(with: imageUrlString) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {

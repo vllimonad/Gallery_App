@@ -7,7 +7,7 @@
 
 import Foundation
 class ImageCollectionViewModel {
-    var images = [ImageInfo]()
+    var images = [Image]()
     var insertItems: (([IndexPath]) -> ())!
     var showAlert: ((Error) -> ())!
     
@@ -16,10 +16,11 @@ class ImageCollectionViewModel {
     let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
     
     func fetchImages() {
-        NetworkService.shared.fetchData(with: "https://api.unsplash.com/photos?page=\(page)&per_page=\(imagesPerPage)&client_id=\(clientId)") { result in
+        let urlString = "https://api.unsplash.com/photos?page=\(page)&per_page=\(imagesPerPage)&client_id=\(clientId)"
+        NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
-                guard let data = try? JSONDecoder().decode([ImageInfo].self, from: data) else { return }
+                guard let data = try? JSONDecoder().decode([Image].self, from: data) else { return }
                 DispatchQueue.main.async {
                     self.images.append(contentsOf: data)
                     self.insertItems(self.getItemsIndexPathArray())
@@ -45,7 +46,7 @@ class ImageCollectionViewModel {
     }
     
     func loadNextPage(_ indexPath: IndexPath) {
-        if indexPath.item == images.count - 1 {
+        if indexPath.item >= images.count - 4 {
             page += 1
             fetchImages()
         }

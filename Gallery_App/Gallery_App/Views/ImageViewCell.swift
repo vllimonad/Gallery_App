@@ -40,7 +40,7 @@ extension ImageViewCell {
     }
     
     func loadImage(with urlString: String) {
-        NetworkService.shared.fetchData(with: urlString) { result in
+        NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {

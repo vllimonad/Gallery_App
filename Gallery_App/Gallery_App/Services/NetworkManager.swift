@@ -6,8 +6,8 @@
 //
 
 import Foundation
-class NetworkService {
-    static let shared = NetworkService()
+class NetworkManager {
+    static let shared = NetworkManager()
     
     private init() {}
     
