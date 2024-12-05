@@ -15,6 +15,7 @@ class ImageDetailsViewModel {
     var updateImageDescription: ((String) -> ())!
     var markAsFavourite: (() -> ())!
     var removeFavouriteMark: (() -> ())!
+    var showAlert: ((Error) -> ())!
     
     func fetchImage(_ imageUrlString: String) {
         NetworkService.shared.fetchData(with: imageUrlString) { result in
@@ -27,7 +28,9 @@ class ImageDetailsViewModel {
                     self.updateHeartButtonImage()
                 }
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self.showAlert(error)
+                }
             }
         }
     }

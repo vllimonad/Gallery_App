@@ -9,6 +9,7 @@ import Foundation
 class ImageCollectionViewModel {
     var images = [ImageInfo]()
     var insertItems: (([IndexPath]) -> ())!
+    var showAlert: ((Error) -> ())!
     
     var page = 1
     let imagesPerPage = 30
@@ -24,7 +25,9 @@ class ImageCollectionViewModel {
                     self.insertItems(self.getItemsIndexPathArray())
                 }
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self.showAlert(error)
+                }
             }
         }
     }
@@ -46,5 +49,11 @@ class ImageCollectionViewModel {
             page += 1
             fetchImages()
         }
+    }
+    
+    func reloadView() {
+        images = []
+        page = 1
+        fetchImages()
     }
 }

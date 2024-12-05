@@ -27,6 +27,7 @@ class ImageDetailsViewController: UIViewController {
         setupGestures()
         setupHeartButton()
         setupUpdateHeartButtonImage()
+        setupShowAlert()
     }
         
     private func setupImageView() {
@@ -79,6 +80,17 @@ class ImageDetailsViewController: UIViewController {
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeLeft.direction = .left
         view.addGestureRecognizer(swipeLeft)
+    }
+    
+    private func setupShowAlert() {
+        viewModel.showAlert = { error in
+            let ac = UIAlertController(title: "Image loading error", message: error.localizedDescription, preferredStyle: .alert)
+            let action2 = UIAlertAction(title: "Return", style: .default) { _ in
+                self.navigationController?.popViewController(animated: true)
+            }
+            ac.addAction(action2)
+            self.present(ac, animated: true)
+        }
     }
     
     @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {

@@ -19,6 +19,7 @@ class ImageCollectionViewController: UIViewController {
         viewModel.fetchImages()
         setupLayout()
         setupCollectionView()
+        setupShowAlert()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +47,20 @@ class ImageCollectionViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         view = collectionView
+    }
+    
+    func setupShowAlert() {
+        viewModel.showAlert = { error in
+            let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
+            let action1 = UIAlertAction(title: "Reload", style: .default) { _ in
+                self.viewModel.reloadView()
+                self.collectionView.reloadData()
+            }
+            let action2 = UIAlertAction(title: "Ok", style: .default)
+            ac.addAction(action1)
+            ac.addAction(action2)
+            self.present(ac, animated: true)
+        }
     }
 }
 

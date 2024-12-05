@@ -44,10 +44,16 @@ extension ImageViewCell {
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
+                    self.contentImageView.contentMode = .scaleToFill
                     self.contentImageView.image = UIImage(data: data)
                 }
             case .failure(let error):
-                print(error)
+                DispatchQueue.main.async {
+                    self.contentImageView.backgroundColor = .black
+                    self.contentImageView.tintColor = .white
+                    self.contentImageView.contentMode = .center
+                    self.contentImageView.image = UIImage(systemName: "arrow.counterclockwise")
+                }
             }
         }
     }
