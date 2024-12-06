@@ -9,7 +9,7 @@ import Foundation
 class DataManager {
     static let shared = DataManager()
     var favouriteImagesIds = [String]()
-    private let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appending(path: "favourite.txt")
+    private let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("favourite.txt")
     
     private init() {
         fetchFavouriteImagesIds()

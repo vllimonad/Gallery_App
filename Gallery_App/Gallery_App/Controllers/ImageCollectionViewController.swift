@@ -14,7 +14,7 @@ class ImageCollectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = ImageCollectionViewModel()
+        title = "Gallery"
         setupInsertItems()
         viewModel.fetchImages()
         setupLayout()
