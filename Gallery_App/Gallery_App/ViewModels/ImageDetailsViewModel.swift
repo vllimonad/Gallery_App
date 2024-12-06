@@ -7,29 +7,46 @@
 
 import Foundation
 class ImageDetailsViewModel {
-    var images: [Image]!
-    var imageIndex: Int!
-    var imageData: Data!
+    private var images: [Image]!
+    private var imageIndex: Int!
+    weak var delegate: ImageDetailsViewModelDelegate!
     
-    var updateImage: (() -> ())!
-    var updateImageDescription: ((String) -> ())!
-    var markAsFavourite: (() -> ())!
-    var removeFavouriteMark: (() -> ())!
-    var showAlert: ((Error) -> ())!
+    private func updateHeartButtonImage() {
+        let id = images[imageIndex].id
+        if DataManager.shared.favouriteImagesIds.contains(id) {
+            delegate.markAsFavourite()
+        } else {
+            delegate.removeFavouriteMark()
+        }
+    }
     
-    func fetchImage(_ imageUrlString: String) {
-        NetworkManager.shared.fetchData(with: imageUrlString) { result in
+    func setImages(_ images: [Image]) {
+        self.images = images
+    }
+    
+    func setImageIndex(_ index: Int) {
+        imageIndex = index
+    }
+    
+    func getImageUrl() -> String {
+        images[imageIndex].urls.regular
+    }
+}
+
+extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
+    func fetchImage() {
+        let urlString = getImageUrl()
+        NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self.imageData = data
-                    self.updateImage()
-                    self.updateImageDescription(self.images[self.imageIndex].alt_description)
+                    self.delegate.updateImage(data)
+                    self.delegate.updateImageDescription(self.images[self.imageIndex].alt_description)
                     self.updateHeartButtonImage()
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self.showAlert(error)
+                    self.delegate.showAlert(error)
                 }
             }
         }
@@ -38,23 +55,14 @@ class ImageDetailsViewModel {
     func swipedRight() {
         if imageIndex > 0 {
             imageIndex -= 1
-            fetchImage(images[imageIndex].urls.regular)
+            fetchImage()
         }
     }
     
     func swipedLeft() {
         if imageIndex < images.count - 1 {
             imageIndex += 1
-            fetchImage(images[imageIndex].urls.regular)
-        }
-    }
-    
-    private func updateHeartButtonImage() {
-        let id = images[imageIndex].id
-        if DataManager.shared.favouriteImagesIds.contains(id) {
-            markAsFavourite()
-        } else {
-            removeFavouriteMark()
+            fetchImage()
         }
     }
     
@@ -62,10 +70,17 @@ class ImageDetailsViewModel {
         let id = images[imageIndex].id
         if DataManager.shared.favouriteImagesIds.contains(id) {
             DataManager.shared.removeFromFavourite(id)
-            removeFavouriteMark()
+            delegate.removeFavouriteMark()
         } else {
             DataManager.shared.addToFavourite(id)
-            markAsFavourite()
+            delegate.markAsFavourite()
         }
     }
+}
+
+protocol ImageDetailsViewModelProtocol {
+    func fetchImage()
+    func swipedRight()
+    func swipedLeft()
+    func heartButtonPressed()
 }

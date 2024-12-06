@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageDetailsViewController: UIViewController {
-    var viewModel: ImageDetailsViewModel!
+    var viewModel: ImageDetailsViewModelProtocol!
     private var imageView: UIImageView!
     private let imageLabel = {
         let label = UILabel()
@@ -20,14 +20,11 @@ class ImageDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.fetchImage()
         setupImageView()
         setupImageLabel()
         setupGestures()
         setupHeartButton()
-        setupUpdateImage()
-        setupUpdateImageDescription()
-        setupUpdateHeartButtonImage()
-        setupShowAlert()
     }
         
     private func setupImageView() {
@@ -52,27 +49,6 @@ class ImageDetailsViewController: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(heartButtonPressed))
     }
     
-    private func setupUpdateImage() {
-        viewModel.updateImage = {
-            self.imageView.image = UIImage(data: self.viewModel.imageData)
-        }
-    }
-    
-    private func setupUpdateImageDescription() {
-        viewModel.updateImageDescription = { description in
-            self.imageLabel.text = description
-        }
-    }
-    
-    private func setupUpdateHeartButtonImage() {
-        viewModel.markAsFavourite = {
-            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
-        }
-        viewModel.removeFavouriteMark = {
-            self.navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
-        }
-    }
-    
     private func setupGestures() {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeRight.direction = .right
@@ -80,17 +56,6 @@ class ImageDetailsViewController: UIViewController {
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(_:)))
         swipeLeft.direction = .left
         view.addGestureRecognizer(swipeLeft)
-    }
-    
-    private func setupShowAlert() {
-        viewModel.showAlert = { error in
-            let ac = UIAlertController(title: "Image loading error", message: error.localizedDescription, preferredStyle: .alert)
-            let action2 = UIAlertAction(title: "Return", style: .default) { _ in
-                self.navigationController?.popViewController(animated: true)
-            }
-            ac.addAction(action2)
-            self.present(ac, animated: true)
-        }
     }
     
     @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
@@ -104,4 +69,39 @@ class ImageDetailsViewController: UIViewController {
     @objc func heartButtonPressed(){
         viewModel.heartButtonPressed()
     }
+}
+
+extension ImageDetailsViewController: ImageDetailsViewModelDelegate {
+    func updateImage(_ data: Data) {
+        imageView.image = UIImage(data: data)
+    }
+    
+    func updateImageDescription(_ description: String) {
+        imageLabel.text = description
+    }
+    
+    func markAsFavourite() {
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+    }
+    
+    func removeFavouriteMark() {
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+    }
+    
+    func showAlert(_ error: any Error) {
+        let ac = UIAlertController(title: "Image loading error", message: error.localizedDescription, preferredStyle: .alert)
+        let action2 = UIAlertAction(title: "Return", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        ac.addAction(action2)
+        self.present(ac, animated: true)
+    }
+}
+
+protocol ImageDetailsViewModelDelegate: AnyObject {
+    func updateImage(_ data: Data)
+    func updateImageDescription(_ description: String)
+    func markAsFavourite()
+    func removeFavouriteMark()
+    func showAlert(_ error: Error)
 }
