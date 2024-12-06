@@ -8,11 +8,12 @@
 import Foundation
 class ImageCollectionViewModel {
     private var images = [Image]()
+    private var requestManager: RequestManager
     weak var delegate: ImageCollectionViewModelDelegate!
     
-    var page = 1
-    let imagesPerPage = 30
-    let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
+    init() {
+        requestManager = RequestManager()
+    }
     
     private func getItemsIndexPathArray() -> [IndexPath] {
         var indexPaths = [IndexPath]()
@@ -25,7 +26,10 @@ class ImageCollectionViewModel {
 
 extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     func fetchImages() {
-        let urlString = "https://api.unsplash.com/photos?page=\(page)&per_page=\(imagesPerPage)&client_id=\(clientId)"
+        let page = requestManager.getPage()
+        let perPage = requestManager.getPerPage()
+        let clientId = requestManager.getClientId()
+        let urlString = "https://api.unsplash.com/photos?page=\(page)&per_page=\(perPage)&client_id=\(clientId)"
         NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
@@ -44,14 +48,14 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     
     func loadNextPage(_ indexPath: IndexPath) {
         if indexPath.item >= images.count - 4 {
-            page += 1
+            requestManager.nextPage()
             fetchImages()
         }
     }
     
     func reloadView() {
         images = []
-        page = 1
+        requestManager.resetPage()
         fetchImages()
     }
     

@@ -19,6 +19,7 @@
 		2BB036412CF907C00030B376 /* ImageDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036402CF907C00030B376 /* ImageDetailsViewController.swift */; };
 		2BB036432CF9089B0030B376 /* ImageDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036422CF9089B0030B376 /* ImageDetailsViewModel.swift */; };
 		2BB036672D00823C0030B376 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036662D00823C0030B376 /* DataManager.swift */; };
+		2BD0D4472D034CF300149154 /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD0D4462D034CF300149154 /* RequestManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		2BB036402CF907C00030B376 /* ImageDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailsViewController.swift; sourceTree = "<group>"; };
 		2BB036422CF9089B0030B376 /* ImageDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDetailsViewModel.swift; sourceTree = "<group>"; };
 		2BB036662D00823C0030B376 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		2BD0D4462D034CF300149154 /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 			children = (
 				2BB036352CF8E43C0030B376 /* NetworkManager.swift */,
 				2BB036662D00823C0030B376 /* DataManager.swift */,
+				2BD0D4462D034CF300149154 /* RequestManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				2BB036342CF8DFC40030B376 /* ImageCollectionViewModel.swift in Sources */,
 				2BB036382CF8E63C0030B376 /* Image.swift in Sources */,
 				2BB0361E2CF8DD9A0030B376 /* AppDelegate.swift in Sources */,
+				2BD0D4472D034CF300149154 /* RequestManager.swift in Sources */,
 				2BB036362CF8E43C0030B376 /* NetworkManager.swift in Sources */,
 				2BB036412CF907C00030B376 /* ImageDetailsViewController.swift in Sources */,
 				2BB036202CF8DD9A0030B376 /* SceneDelegate.swift in Sources */,
