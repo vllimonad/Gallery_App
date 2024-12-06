@@ -18,6 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let vc = ImageCollectionViewController()
         let vm = ImageCollectionViewModel()
         vc.viewModel = vm
+        vm.delegate = vc
         window?.rootViewController = UINavigationController(rootViewController: vc)
         window?.makeKeyAndVisible()
     }

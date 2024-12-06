@@ -8,29 +8,21 @@
 import UIKit
 
 class ImageCollectionViewController: UIViewController {
-    var viewModel: ImageCollectionViewModel!
+    var viewModel: ImageCollectionViewModelProtocol!
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Gallery"
-        setupInsertItems()
         viewModel.fetchImages()
         setupLayout()
         setupCollectionView()
-        setupShowAlert()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         collectionView.reloadData()
-    }
-    
-    private func setupInsertItems() {
-        viewModel.insertItems = { array in
-            self.collectionView.insertItems(at: array)
-        }
     }
     
     private func setupLayout() {
@@ -48,30 +40,16 @@ class ImageCollectionViewController: UIViewController {
         collectionView.delegate = self
         view = collectionView
     }
-    
-    func setupShowAlert() {
-        viewModel.showAlert = { error in
-            let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
-            let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
-                self.viewModel.reloadView()
-                self.collectionView.reloadData()
-            }
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            ac.addAction(reloadAction)
-            ac.addAction(okAction)
-            self.present(ac, animated: true)
-        }
-    }
 }
 
 extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.images.count
+        viewModel.getImagesCount()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
-        let imageUrlString = viewModel.images[indexPath.item].urls.thumb
+        let imageUrlString = viewModel.getImageUrl(indexPath)
         cell.loadImage(with: imageUrlString)
         if viewModel.isImageFavourite(indexPath) {
             cell.markAsFavourite()
@@ -82,10 +60,10 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let imageUrlString = viewModel.images[indexPath.item].urls.regular
+        let imageUrlString = viewModel.getImageUrl(indexPath)
         let vc = ImageDetailsViewController()
         let vm = ImageDetailsViewModel()
-        vm.images = viewModel.images
+        vm.images = viewModel.getImages()
         vm.imageIndex = indexPath.item
         vm.fetchImage(imageUrlString)
         vc.viewModel = vm
@@ -95,4 +73,27 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         viewModel.loadNextPage(indexPath)
     }
+}
+
+extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
+    func insertItems(_ indexPaths: [IndexPath]) {
+        collectionView.insertItems(at: indexPaths)
+    }
+    
+    func showAlert(_ error: any Error) {
+        let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
+        let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
+            self.viewModel.reloadView()
+            self.collectionView.reloadData()
+        }
+        let okAction = UIAlertAction(title: "Ok", style: .default)
+        ac.addAction(reloadAction)
+        ac.addAction(okAction)
+        present(ac, animated: true)
+    }
+}
+
+protocol ImageCollectionViewModelDelegate: AnyObject {
+    func insertItems(_ indexPaths: [IndexPath])
+    func showAlert(_ error: Error)
 }
