@@ -9,7 +9,7 @@ import Foundation
 class ImageCollectionViewModel {
     private var images = [Image]()
     private var requestManager: RequestManager
-    weak var delegate: ImageCollectionViewModelDelegate!
+    weak var delegate: ImageCollectionViewModelDelegate?
     
     init() {
         requestManager = RequestManager()
@@ -36,11 +36,11 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
                 guard let data = try? JSONDecoder().decode([Image].self, from: data) else { return }
                 DispatchQueue.main.async {
                     self.images.append(contentsOf: data)
-                    self.delegate.insertItems(self.getItemsIndexPathArray())
+                    self.delegate?.insertItems(self.getItemsIndexPathArray())
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self.delegate.showAlert(error)
+                    self.delegate?.showAlert(error)
                 }
             }
         }
