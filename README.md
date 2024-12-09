@@ -31,9 +31,9 @@ Image Details Screen shows selected image in a larger view with image descriptio
 
 ### Errors handling
 
-<img src="https://github.com/user-attachments/assets/d12b5cb4-cfca-4af5-b72a-1248de298f27" width="265" >
-<img src="https://github.com/user-attachments/assets/4dde850f-e3e4-460c-b742-e5f7fa64c5da" width="265" >
 <img src="https://github.com/user-attachments/assets/e97dc3eb-b9cf-4508-af58-442f2829e53c" width="265" >
+<img src="https://github.com/user-attachments/assets/4dde850f-e3e4-460c-b742-e5f7fa64c5da" width="265" >
+<img src="https://github.com/user-attachments/assets/d12b5cb4-cfca-4af5-b72a-1248de298f27" width="265" >
 <br><br>
 
 Implemented errors handling and displaying error messages to the user using alerts. Alerts actions allow user to reload application or even ignore errors. When image loading errors occur, image will be displayed in Image Collection Screen as a loading arrow icon with black background.
