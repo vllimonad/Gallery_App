@@ -1,6 +1,6 @@
 # Gallery App
 
-## About project
+## About
 
 An iOS application for discovering new images using the most powerful photo engine in the world.
 
@@ -39,7 +39,7 @@ Image Details Screen shows selected image in a larger view with image descriptio
 Implemented errors handling and displaying error messages to the user using alerts. Alerts actions allow user to reload application or even ignore errors. When image loading errors occur, image will be displayed in Image Collection Screen as a loading arrow icon with black background.
 <br><br>
 
-### Data persistence
+### Data storing
 
 Information about favourite images is stored locally on the user device. It is implemented by saving favourite image ID.  
 
