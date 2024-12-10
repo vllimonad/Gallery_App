@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageViewCell: UICollectionViewCell {
+final class ImageViewCell: UICollectionViewCell {
     private var contentImageView = UIImageView()
     private var heartImageView = {
         let heart = UIImageView()

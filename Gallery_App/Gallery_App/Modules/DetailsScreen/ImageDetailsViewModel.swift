@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class ImageDetailsViewModel {
+final class ImageDetailsViewModel {
     private var images: [Image]!
     private var imageIndex: Int!
     weak var delegate: ImageDetailsViewModelDelegate!

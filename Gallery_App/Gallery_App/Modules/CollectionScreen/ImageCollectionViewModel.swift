@@ -6,7 +6,7 @@
 //
 
 import Foundation
-class ImageCollectionViewModel {
+final class ImageCollectionViewModel {
     private var images = [Image]()
     private var requestManager: RequestManager
     weak var delegate: ImageCollectionViewModelDelegate?

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCollectionViewController: UIViewController {
+final class ImageCollectionViewController: UIViewController {
     var viewModel: ImageCollectionViewModelProtocol!
     private var collectionView: UICollectionView!
     private var layout: UICollectionViewFlowLayout!

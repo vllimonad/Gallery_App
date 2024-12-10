@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageDetailsViewController: UIViewController {
+final class ImageDetailsViewController: UIViewController {
     var viewModel: ImageDetailsViewModelProtocol!
     private var imageView: UIImageView!
     private let imageLabel = {
