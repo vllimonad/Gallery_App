@@ -51,6 +51,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B8CE9402D08F24500373EDD /* CollectionScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
+				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
+				2BB036212CF8DD9A0030B376 /* ImageCollectionViewController.swift */,
+			);
+			path = CollectionScreen;
+			sourceTree = "<group>";
+		};
+		2B8CE9412D08F27100373EDD /* DetailsScreen */ = {
+			isa = PBXGroup;
+			children = (
+				2BB036402CF907C00030B376 /* ImageDetailsViewController.swift */,
+				2BB036422CF9089B0030B376 /* ImageDetailsViewModel.swift */,
+			);
+			path = DetailsScreen;
+			sourceTree = "<group>";
+		};
+		2B8CE9422D08F31900373EDD /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				2B8CE9402D08F24500373EDD /* CollectionScreen */,
+				2B8CE9412D08F27100373EDD /* DetailsScreen */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		2BB036112CF8DD9A0030B376 = {
 			isa = PBXGroup;
 			children = (
@@ -71,10 +99,8 @@
 			isa = PBXGroup;
 			children = (
 				2BB036392CF8F2630030B376 /* Application */,
-				2BB0363A2CF8F2720030B376 /* Controllers */,
-				2BB0363F2CF8F2A50030B376 /* Views */,
-				2BB0363E2CF8F29C0030B376 /* Services */,
-				2BB0363D2CF8F2910030B376 /* ViewModels */,
+				2B8CE9422D08F31900373EDD /* Modules */,
+				2BB0363E2CF8F29C0030B376 /* Managers */,
 				2BB0363C2CF8F2880030B376 /* Models */,
 				2BB0363B2CF8F27D0030B376 /* Resources */,
 				2BB0362B2CF8DD9B0030B376 /* Info.plist */,
@@ -89,15 +115,6 @@
 				2BB0361F2CF8DD9A0030B376 /* SceneDelegate.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		2BB0363A2CF8F2720030B376 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				2BB036212CF8DD9A0030B376 /* ImageCollectionViewController.swift */,
-				2BB036402CF907C00030B376 /* ImageDetailsViewController.swift */,
-			);
-			path = Controllers;
 			sourceTree = "<group>";
 		};
 		2BB0363B2CF8F27D0030B376 /* Resources */ = {
@@ -117,31 +134,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		2BB0363D2CF8F2910030B376 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
-				2BB036422CF9089B0030B376 /* ImageDetailsViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		2BB0363E2CF8F29C0030B376 /* Services */ = {
+		2BB0363E2CF8F29C0030B376 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				2BB036352CF8E43C0030B376 /* NetworkManager.swift */,
 				2BB036662D00823C0030B376 /* DataManager.swift */,
 				2BD0D4462D034CF300149154 /* RequestManager.swift */,
 			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		2BB0363F2CF8F2A50030B376 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
-			);
-			path = Views;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
