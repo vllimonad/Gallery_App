@@ -7,9 +7,14 @@
 
 import Foundation
 final class ImageDetailsViewModel {
-    private var images: [Image]!
-    private var imageIndex: Int!
+    private var images: [Image]
+    private var imageIndex: Int
     weak var delegate: ImageDetailsViewModelDelegate!
+    
+    init(images: [Image], imageIndex: Int) {
+        self.images = images
+        self.imageIndex = imageIndex
+    }
     
     private func updateHeartButtonImage() {
         let id = images[imageIndex].id
@@ -19,23 +24,11 @@ final class ImageDetailsViewModel {
             delegate.removeFavouriteMark()
         }
     }
-    
-    func setImages(_ images: [Image]) {
-        self.images = images
-    }
-    
-    func setImageIndex(_ index: Int) {
-        imageIndex = index
-    }
-    
-    func getImageUrl() -> String {
-        images[imageIndex].urls.regular
-    }
 }
 
 extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     func fetchImage() {
-        let urlString = getImageUrl()
+        let urlString = images[imageIndex].urls.regular
         NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
@@ -53,17 +46,15 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     }
     
     func swipedRight() {
-        if imageIndex > 0 {
-            imageIndex -= 1
-            fetchImage()
-        }
+        guard imageIndex > 0 else { return }
+        imageIndex -= 1
+        fetchImage()
     }
     
     func swipedLeft() {
-        if imageIndex < images.count - 1 {
-            imageIndex += 1
-            fetchImage()
-        }
+        guard imageIndex < images.count - 1 else { return }
+        imageIndex += 1
+        fetchImage()
     }
     
     func heartButtonPressed() {

@@ -62,11 +62,9 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = ImageDetailsViewController()
-        let vm = ImageDetailsViewModel()
+        let vm = ImageDetailsViewModel(images: viewModel.getImages(), imageIndex: indexPath.item)
         vc.viewModel = vm
         vm.delegate = vc
-        vm.setImages(viewModel.getImages())
-        vm.setImageIndex(indexPath.item)
         navigationController?.pushViewController(vc, animated: true)
     }
     

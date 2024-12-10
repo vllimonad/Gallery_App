@@ -9,7 +9,13 @@ import UIKit
 
 final class ImageDetailsViewController: UIViewController {
     var viewModel: ImageDetailsViewModelProtocol!
-    private var imageView: UIImageView!
+    private var imageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.backgroundColor = .black
+        return imageView
+    }()
+    
     private let imageLabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -28,10 +34,7 @@ final class ImageDetailsViewController: UIViewController {
     }
         
     private func setupImageView() {
-        imageView = UIImageView()
         imageView.frame = view.bounds
-        imageView.contentMode = .scaleAspectFit
-        imageView.backgroundColor = .black
         view.addSubview(imageView)
     }
     
