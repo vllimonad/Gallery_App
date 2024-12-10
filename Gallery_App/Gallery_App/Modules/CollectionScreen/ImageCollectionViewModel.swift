@@ -26,10 +26,11 @@ final class ImageCollectionViewModel {
 
 extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     func fetchImages() {
-        let page = requestManager.getPage()
-        let perPage = requestManager.getPerPage()
-        let clientId = requestManager.getClientId()
-        let urlString = "https://api.unsplash.com/photos?page=\(page)&per_page=\(perPage)&client_id=\(clientId)"
+        let baseUrl = "https://api.unsplash.com/photos"
+        let pageParameter = "page=\(requestManager.getPage())"
+        let perPageParameter = "per_page=\(requestManager.getPerPage())"
+        let clientIdParameter = "client_id=\(requestManager.getClientId())"
+        let urlString = "\(baseUrl)?\(pageParameter)&\(perPageParameter)&\(clientIdParameter)"
         NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):

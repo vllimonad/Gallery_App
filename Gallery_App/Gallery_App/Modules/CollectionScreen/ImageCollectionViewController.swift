@@ -38,7 +38,8 @@ final class ImageCollectionViewController: UIViewController {
         collectionView.register(ImageViewCell.self, forCellWithReuseIdentifier: "ImageCell")
         collectionView.dataSource = self
         collectionView.delegate = self
-        view = collectionView
+        collectionView.frame = view.bounds
+        view.addSubview(collectionView)
     }
 }
 

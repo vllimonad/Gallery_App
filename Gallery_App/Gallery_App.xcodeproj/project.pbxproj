@@ -54,9 +54,9 @@
 		2B8CE9402D08F24500373EDD /* CollectionScreen */ = {
 			isa = PBXGroup;
 			children = (
-				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
-				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
 				2BB036212CF8DD9A0030B376 /* ImageCollectionViewController.swift */,
+				2BB036332CF8DFC40030B376 /* ImageCollectionViewModel.swift */,
+				2BB036312CF8DEC00030B376 /* ImageViewCell.swift */,
 			);
 			path = CollectionScreen;
 			sourceTree = "<group>";
