@@ -7,10 +7,6 @@
 
 import Foundation
 final class NetworkManager {
-    static let shared = NetworkManager()
-    
-    private init() {}
-    
     func fetchData(with urlString: String, completion: @escaping (Result<Data,Error>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, response, error in

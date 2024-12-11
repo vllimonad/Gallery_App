@@ -8,28 +8,43 @@
 import Foundation
 final class ImageDetailsViewModel {
     private var images: [Image]
+    private var favouriteImagesIds = [String]()
     private var imageIndex: Int
+    private var dataManager: DataManager
     weak var delegate: ImageDetailsViewModelDelegate!
     
     init(images: [Image], imageIndex: Int) {
         self.images = images
         self.imageIndex = imageIndex
+        dataManager = DataManager()
+        favouriteImagesIds = dataManager.fetchFavouriteImagesIds()
     }
     
     private func updateHeartButtonImage() {
         let id = images[imageIndex].id
-        if DataManager.shared.favouriteImagesIds.contains(id) {
+        if favouriteImagesIds.contains(id) {
             delegate.markAsFavourite()
         } else {
             delegate.removeFavouriteMark()
         }
+    }
+    
+    private func addImageToFavourite(_ id: String) {
+        favouriteImagesIds.append(id)
+        dataManager.saveFavouriteImagesIds(favouriteImagesIds)
+    }
+    
+    private func removeImageFromFavourite(_ id: String) {
+        guard let index = favouriteImagesIds.firstIndex(of: id) else { return }
+        favouriteImagesIds.remove(at: index)
+        dataManager.saveFavouriteImagesIds(favouriteImagesIds)
     }
 }
 
 extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     func fetchImage() {
         let urlString = images[imageIndex].urls.regular
-        NetworkManager.shared.fetchData(with: urlString) { result in
+        NetworkManager().fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
@@ -59,11 +74,11 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     
     func heartButtonPressed() {
         let id = images[imageIndex].id
-        if DataManager.shared.favouriteImagesIds.contains(id) {
-            DataManager.shared.removeFromFavourite(id)
+        if favouriteImagesIds.contains(id) {
+            removeImageFromFavourite(id)
             delegate.removeFavouriteMark()
         } else {
-            DataManager.shared.addToFavourite(id)
+            addImageToFavourite(id)
             delegate.markAsFavourite()
         }
     }

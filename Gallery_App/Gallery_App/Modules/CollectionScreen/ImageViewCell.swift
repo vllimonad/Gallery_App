@@ -40,7 +40,7 @@ final class ImageViewCell: UICollectionViewCell {
 
 extension ImageViewCell {
     func loadImage(with urlString: String) {
-        NetworkManager.shared.fetchData(with: urlString) { result in
+        NetworkManager().fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {

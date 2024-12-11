@@ -8,11 +8,15 @@
 import Foundation
 final class ImageCollectionViewModel {
     private var images = [Image]()
+    private var favouriteImagesIds = [String]()
     private var requestManager: RequestManager
+    private var dataManager: DataManager
     weak var delegate: ImageCollectionViewModelDelegate?
     
     init() {
         requestManager = RequestManager()
+        dataManager = DataManager()
+        favouriteImagesIds = dataManager.fetchFavouriteImagesIds()
     }
     
     private func getItemsIndexPathArray() -> [IndexPath] {
@@ -31,7 +35,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         let perPageParameter = "per_page=\(requestManager.getPerPage())"
         let clientIdParameter = "client_id=\(requestManager.getClientId())"
         let urlString = "\(baseUrl)?\(pageParameter)&\(perPageParameter)&\(clientIdParameter)"
-        NetworkManager.shared.fetchData(with: urlString) { result in
+        NetworkManager().fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 guard let data = try? JSONDecoder().decode([Image].self, from: data) else { return }
@@ -64,7 +68,11 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     }
     
     func isImageFavourite(_ indexPath: IndexPath) -> Bool {
-        DataManager.shared.favouriteImagesIds.contains(images[indexPath.item].id)
+        favouriteImagesIds.contains(images[indexPath.item].id)
+    }
+    
+    func reloadData() {
+        favouriteImagesIds = dataManager.fetchFavouriteImagesIds()
     }
 }
 
@@ -74,4 +82,5 @@ protocol ImageCollectionViewModelProtocol {
     func loadNextPage(_ indexPath: IndexPath)
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
     func getImages() -> [Image]
+    func reloadData()
 }
