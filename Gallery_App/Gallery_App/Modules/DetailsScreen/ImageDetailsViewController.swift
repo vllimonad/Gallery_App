@@ -27,19 +27,15 @@ final class ImageDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.fetchImage()
-        setupImageView()
-        setupImageLabel()
+        setupLayout()
         setupGestures()
         setupHeartButton()
     }
-        
-    private func setupImageView() {
-        imageView.frame = view.bounds
-        view.addSubview(imageView)
-    }
     
-    private func setupImageLabel() {
+    private func setupLayout() {
         view.addSubview(imageLabel)
+        view.addSubview(imageView)
+        imageView.frame = view.bounds
         NSLayoutConstraint.activate([
             imageLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             imageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -75,12 +71,9 @@ final class ImageDetailsViewController: UIViewController {
 }
 
 extension ImageDetailsViewController: ImageDetailsViewModelDelegate {
-    func updateImage(_ data: Data) {
-        imageView.image = UIImage(data: data)
-    }
-    
-    func updateImageDescription(_ description: String) {
-        imageLabel.text = description
+    func updateImageDetails(with imageData: Data, and imageDescription: String) {
+        imageView.image = UIImage(data: imageData)
+        imageLabel.text = imageDescription
     }
     
     func markAsFavourite() {
@@ -102,8 +95,7 @@ extension ImageDetailsViewController: ImageDetailsViewModelDelegate {
 }
 
 protocol ImageDetailsViewModelDelegate: AnyObject {
-    func updateImage(_ data: Data)
-    func updateImageDescription(_ description: String)
+    func updateImageDetails(with imageData: Data, and imageDescription: String)
     func markAsFavourite()
     func removeFavouriteMark()
     func showAlert(_ error: Error)

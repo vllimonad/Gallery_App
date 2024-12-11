@@ -16,7 +16,7 @@ final class ImageCollectionViewController: UIViewController {
         super.viewDidLoad()
         title = "Gallery"
         viewModel.fetchImages()
-        setupLayout()
+        setupCollectionViewLayout()
         setupCollectionView()
     }
     
@@ -25,7 +25,7 @@ final class ImageCollectionViewController: UIViewController {
         collectionView.reloadData()
     }
     
-    private func setupLayout() {
+    private func setupCollectionViewLayout() {
         layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: view.frame.width/3 - 1, height: view.frame.width/3 - 1)
@@ -45,12 +45,12 @@ final class ImageCollectionViewController: UIViewController {
 
 extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.getImagesCount()
+        viewModel.getImages().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
-        let imageUrlString = viewModel.getImageUrl(indexPath)
+        let imageUrlString = viewModel.getImages()[indexPath.item].urls.thumb
         cell.loadImage(with: imageUrlString)
         if viewModel.isImageFavourite(indexPath) {
             cell.markAsFavourite()

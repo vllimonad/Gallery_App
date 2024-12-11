@@ -26,9 +26,7 @@ final class ImageViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-extension ImageViewCell {
+    
     private func setupLayout() {
         addSubview(contentImageView)
         addSubview(heartImageView)
@@ -38,7 +36,9 @@ extension ImageViewCell {
             heartImageView.bottomAnchor.constraint(equalTo: contentImageView.bottomAnchor, constant: -10)
         ])
     }
-    
+}
+
+extension ImageViewCell {
     func loadImage(with urlString: String) {
         NetworkManager.shared.fetchData(with: urlString) { result in
             switch result {

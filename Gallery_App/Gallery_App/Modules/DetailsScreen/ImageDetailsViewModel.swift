@@ -33,8 +33,8 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self.delegate.updateImage(data)
-                    self.delegate.updateImageDescription(self.images[self.imageIndex].alt_description)
+                    let imageDescription = self.images[self.imageIndex].alt_description
+                    self.delegate.updateImageDetails(with: data, and: imageDescription)
                     self.updateHeartButtonImage()
                 }
             case .failure(let error):

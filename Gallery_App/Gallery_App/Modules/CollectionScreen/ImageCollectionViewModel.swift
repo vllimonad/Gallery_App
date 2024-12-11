@@ -48,10 +48,9 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     }
     
     func loadNextPage(_ indexPath: IndexPath) {
-        if indexPath.item >= images.count - 4 {
-            requestManager.nextPage()
-            fetchImages()
-        }
+        guard indexPath.item >= images.count - 4  else { return }
+        requestManager.nextPage()
+        fetchImages()
     }
     
     func reloadView() {
@@ -62,14 +61,6 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     
     func getImages() -> [Image] {
         images
-    }
-    
-    func getImagesCount() -> Int {
-        images.count
-    }
-    
-    func getImageUrl(_ indexPath: IndexPath) -> String {
-        images[indexPath.item].urls.thumb
     }
     
     func isImageFavourite(_ indexPath: IndexPath) -> Bool {
@@ -83,6 +74,4 @@ protocol ImageCollectionViewModelProtocol {
     func loadNextPage(_ indexPath: IndexPath)
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
     func getImages() -> [Image]
-    func getImagesCount() -> Int
-    func getImageUrl(_ indexPath: IndexPath) -> String
 }
