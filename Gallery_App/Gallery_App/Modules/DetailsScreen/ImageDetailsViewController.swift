@@ -33,9 +33,9 @@ final class ImageDetailsViewController: UIViewController {
     }
     
     private func setupLayout() {
-        view.addSubview(imageLabel)
-        view.addSubview(imageView)
         imageView.frame = view.bounds
+        view.addSubview(imageView)
+        view.addSubview(imageLabel)
         NSLayoutConstraint.activate([
             imageLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             imageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
