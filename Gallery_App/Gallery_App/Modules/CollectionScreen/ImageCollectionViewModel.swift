@@ -8,7 +8,7 @@
 import Foundation
 final class ImageCollectionViewModel {
     private var images = [Image]()
-    private var favouriteImagesIds = [String]()
+    private var favouriteImages = [Image]()
     private var requestManager: RequestManager
     private var dataManager: DataManager
     weak var delegate: ImageCollectionViewModelDelegate?
@@ -16,7 +16,7 @@ final class ImageCollectionViewModel {
     init() {
         requestManager = RequestManager()
         dataManager = DataManager()
-        favouriteImagesIds = dataManager.fetchFavouriteImagesIds()
+        favouriteImages = dataManager.fetchFavouriteImages()
     }
     
     private func getItemsIndexPathArray() -> [IndexPath] {
@@ -57,7 +57,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         fetchImages()
     }
     
-    func reloadView() {
+    func reloadData() {
         images = []
         requestManager.resetPage()
         fetchImages()
@@ -68,19 +68,19 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     }
     
     func isImageFavourite(_ indexPath: IndexPath) -> Bool {
-        favouriteImagesIds.contains(images[indexPath.item].id)
+        favouriteImages.contains(where: { $0.id == images[indexPath.item].id })
     }
     
-    func reloadData() {
-        favouriteImagesIds = dataManager.fetchFavouriteImagesIds()
+    func updateFavouriteImages() {
+        favouriteImages = dataManager.fetchFavouriteImages()
     }
 }
 
 protocol ImageCollectionViewModelProtocol {
     func fetchImages()
-    func reloadView()
+    func reloadData()
     func loadNextPage(_ indexPath: IndexPath)
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
     func getImages() -> [Image]
-    func reloadData()
+    func updateFavouriteImages()
 }

@@ -22,7 +22,7 @@ final class ImageCollectionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.reloadData()
+        viewModel.updateFavouriteImages()
         collectionView.reloadData()
     }
     
@@ -82,7 +82,7 @@ extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
     func showAlert(_ error: any Error) {
         let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
         let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
-            self.viewModel.reloadView()
+            self.viewModel.reloadData()
             self.collectionView.reloadData()
         }
         let okAction = UIAlertAction(title: "Ok", style: .default)

@@ -8,7 +8,7 @@
 import Foundation
 final class ImageDetailsViewModel {
     private var images: [Image]
-    private var favouriteImagesIds = [String]()
+    private var favouriteImages = [Image]()
     private var imageIndex: Int
     private var dataManager: DataManager
     weak var delegate: ImageDetailsViewModelDelegate!
@@ -17,27 +17,28 @@ final class ImageDetailsViewModel {
         self.images = images
         self.imageIndex = imageIndex
         dataManager = DataManager()
-        favouriteImagesIds = dataManager.fetchFavouriteImagesIds()
+        favouriteImages = dataManager.fetchFavouriteImages()
     }
     
     private func updateHeartButtonImage() {
         let id = images[imageIndex].id
-        if favouriteImagesIds.contains(id) {
+        if favouriteImages.contains(where: { $0.id == id }) {
             delegate.markAsFavourite()
         } else {
             delegate.removeFavouriteMark()
         }
     }
     
-    private func addImageToFavourite(_ id: String) {
-        favouriteImagesIds.append(id)
-        dataManager.saveFavouriteImagesIds(favouriteImagesIds)
+    private func addImageToFavourite() {
+        let image = images[imageIndex]
+        favouriteImages.append(image)
+        dataManager.saveFavouriteImages(favouriteImages)
     }
     
-    private func removeImageFromFavourite(_ id: String) {
-        guard let index = favouriteImagesIds.firstIndex(of: id) else { return }
-        favouriteImagesIds.remove(at: index)
-        dataManager.saveFavouriteImagesIds(favouriteImagesIds)
+    private func removeImageFromFavourite() {
+        let id = images[imageIndex].id
+        favouriteImages.removeAll(where: { $0.id == id })
+        dataManager.saveFavouriteImages(favouriteImages)
     }
 }
 
@@ -74,11 +75,11 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     
     func heartButtonPressed() {
         let id = images[imageIndex].id
-        if favouriteImagesIds.contains(id) {
-            removeImageFromFavourite(id)
+        if favouriteImages.contains(where: { $0.id == id }) {
+            removeImageFromFavourite()
             delegate.removeFavouriteMark()
         } else {
-            addImageToFavourite(id)
+            addImageToFavourite()
             delegate.markAsFavourite()
         }
     }

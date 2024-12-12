@@ -7,16 +7,16 @@
 
 import Foundation
 final class DataManager {
-    private let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("favourite.txt")
+    private let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("favouriteImages.txt")
     
-    func fetchFavouriteImagesIds() -> [String] {
+    func fetchFavouriteImages() -> [Image] {
         guard let data = try? Data(contentsOf: url) else { return [] }
-        guard let fetchedIds = try? JSONDecoder().decode([String].self, from: data) else { return [] }
-        return fetchedIds
+        guard let favouriteImages = try? JSONDecoder().decode([Image].self, from: data) else { return [] }
+        return favouriteImages
     }
     
-    func saveFavouriteImagesIds(_ favouriteImagesIds: [String]) {
-        guard let data = try? JSONEncoder().encode(favouriteImagesIds) else { return }
+    func saveFavouriteImages(_ favouriteImages: [Image]) {
+        guard let data = try? JSONEncoder().encode(favouriteImages) else { return }
         try? data.write(to: url)
     }
 }
