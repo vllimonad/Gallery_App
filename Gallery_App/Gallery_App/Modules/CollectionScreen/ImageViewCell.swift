@@ -8,7 +8,14 @@
 import UIKit
 
 final class ImageViewCell: UICollectionViewCell {
-    private var contentImageView = UIImageView()
+    private var contentImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = .black
+        imageView.tintColor = .white
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    
     private var heartImageView = {
         let heart = UIImageView()
         heart.image = UIImage(systemName: "heart.fill")
@@ -44,13 +51,11 @@ extension ImageViewCell {
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self.contentImageView.contentMode = .scaleToFill
+                    self.contentImageView.contentMode = .scaleAspectFill
                     self.contentImageView.image = UIImage(data: data)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self.contentImageView.backgroundColor = .black
-                    self.contentImageView.tintColor = .white
                     self.contentImageView.contentMode = .center
                     self.contentImageView.image = UIImage(systemName: "arrow.counterclockwise")
                 }
