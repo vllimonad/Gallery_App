@@ -14,16 +14,17 @@ final class ImageCollectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Gallery"
         viewModel.fetchImages()
         setupCollectionViewLayout()
         setupCollectionView()
+        setupNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.updateFavouriteImages()
         collectionView.reloadData()
+        updateHeartBarButtonItemImage()
     }
     
     private func setupCollectionViewLayout() {
@@ -41,6 +42,25 @@ final class ImageCollectionViewController: UIViewController {
         collectionView.delegate = self
         collectionView.frame = view.bounds
         view.addSubview(collectionView)
+    }
+    
+    private func setupNavigationBar() {
+        title = "Gallery"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(heartButtonPressed))
+    }
+    
+    private func updateHeartBarButtonItemImage() {
+        if viewModel.showFavouriteImages {
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+        } else {
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+        }
+    }
+    
+    @objc private func heartButtonPressed() {
+        viewModel.showFavouriteImages.toggle()
+        collectionView.reloadData()
+        updateHeartBarButtonItemImage()
     }
 }
 
