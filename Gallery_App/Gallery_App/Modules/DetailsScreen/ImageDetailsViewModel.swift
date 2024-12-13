@@ -11,7 +11,7 @@ final class ImageDetailsViewModel {
     private var favouriteImages = [Image]()
     private var imageIndex: Int
     private var dataManager: DataManager
-    weak var delegate: ImageDetailsViewModelDelegate!
+    weak var delegate: ImageDetailsViewModelDelegate?
     
     init(images: [Image], imageIndex: Int) {
         self.images = images
@@ -23,9 +23,9 @@ final class ImageDetailsViewModel {
     private func updateHeartButtonImage() {
         let id = images[imageIndex].id
         if favouriteImages.contains(where: { $0.id == id }) {
-            delegate.markAsFavourite()
+            delegate?.markAsFavourite()
         } else {
-            delegate.removeFavouriteMark()
+            delegate?.removeFavouriteMark()
         }
     }
     
@@ -50,12 +50,12 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
             case .success(let data):
                 DispatchQueue.main.async {
                     let imageDescription = self.images[self.imageIndex].alt_description
-                    self.delegate.updateImageDetails(with: data, and: imageDescription)
+                    self.delegate?.updateImageDetails(with: data, and: imageDescription)
                     self.updateHeartButtonImage()
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
-                    self.delegate.showAlert(error)
+                    self.delegate?.showAlert(error)
                 }
             }
         }
@@ -77,10 +77,10 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
         let id = images[imageIndex].id
         if favouriteImages.contains(where: { $0.id == id }) {
             removeImageFromFavourite()
-            delegate.removeFavouriteMark()
+            delegate?.removeFavouriteMark()
         } else {
             addImageToFavourite()
-            delegate.markAsFavourite()
+            delegate?.markAsFavourite()
         }
     }
 }

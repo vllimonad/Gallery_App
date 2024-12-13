@@ -8,13 +8,13 @@
 import UIKit
 
 final class ImageCollectionViewController: UIViewController {
-    var viewModel: ImageCollectionViewModelProtocol!
-    private var collectionView: UICollectionView!
-    private var layout: UICollectionViewFlowLayout!
+    var viewModel: ImageCollectionViewModelProtocol?
+    private var collectionView: UICollectionView?
+    private var layout: UICollectionViewFlowLayout?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.fetchImages()
+        viewModel?.fetchImages()
         setupCollectionViewLayout()
         setupCollectionView()
         setupNavigationBar()
@@ -22,26 +22,26 @@ final class ImageCollectionViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.updateFavouriteImages()
-        collectionView.reloadData()
+        viewModel?.updateFavouriteImages()
+        collectionView?.reloadData()
         updateHeartBarButtonItemImage()
     }
     
     private func setupCollectionViewLayout() {
         layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.frame.width/3 - 1, height: view.frame.width/3 - 1)
-        layout.minimumLineSpacing = 1
-        layout.minimumInteritemSpacing = 1
+        layout?.scrollDirection = .vertical
+        layout?.itemSize = CGSize(width: view.frame.width/3 - 1, height: view.frame.width/3 - 1)
+        layout?.minimumLineSpacing = 1
+        layout?.minimumInteritemSpacing = 1
     }
     
     private func setupCollectionView() {
-        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout)
-        collectionView.register(ImageViewCell.self, forCellWithReuseIdentifier: "ImageCell")
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.frame = view.bounds
-        view.addSubview(collectionView)
+        collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout!)
+        collectionView?.register(ImageViewCell.self, forCellWithReuseIdentifier: "ImageCell")
+        collectionView?.dataSource = self
+        collectionView?.delegate = self
+        collectionView?.frame = view.bounds
+        view.addSubview(collectionView!)
     }
     
     private func setupNavigationBar() {
@@ -50,7 +50,7 @@ final class ImageCollectionViewController: UIViewController {
     }
     
     private func updateHeartBarButtonItemImage() {
-        if viewModel.showFavouriteImages {
+        if viewModel?.showFavouriteImages ?? false {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
         } else {
             navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
@@ -58,22 +58,22 @@ final class ImageCollectionViewController: UIViewController {
     }
     
     @objc private func heartButtonPressed() {
-        viewModel.showFavouriteImages.toggle()
-        collectionView.reloadData()
+        viewModel?.showFavouriteImages.toggle()
+        collectionView?.reloadData()
         updateHeartBarButtonItemImage()
     }
 }
 
 extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.getImages().count
+        viewModel?.getImages().count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
-        let imageUrlString = viewModel.getImages()[indexPath.item].urls.thumb
+        guard let imageUrlString = viewModel?.getImages()[indexPath.item].urls.thumb else { return cell }
         cell.loadImage(with: imageUrlString)
-        if viewModel.isImageFavourite(indexPath) {
+        if viewModel?.isImageFavourite(indexPath) ?? false {
             cell.markAsFavourite()
         } else {
             cell.removeFavouriteMark()
@@ -82,28 +82,29 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let images = viewModel?.getImages() else { return }
         let vc = ImageDetailsViewController()
-        let vm = ImageDetailsViewModel(images: viewModel.getImages(), imageIndex: indexPath.item)
+        let vm = ImageDetailsViewModel(images: images, imageIndex: indexPath.item)
         vc.viewModel = vm
         vm.delegate = vc
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        viewModel.loadNextPage(indexPath)
+        viewModel?.loadNextPage(indexPath)
     }
 }
 
 extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
     func insertItems(_ indexPaths: [IndexPath]) {
-        collectionView.insertItems(at: indexPaths)
+        collectionView?.insertItems(at: indexPaths)
     }
     
     func showAlert(_ error: any Error) {
         let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
         let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
-            self.viewModel.reloadData()
-            self.collectionView.reloadData()
+            self.viewModel?.reloadData()
+            self.collectionView?.reloadData()
         }
         let okAction = UIAlertAction(title: "Ok", style: .default)
         ac.addAction(reloadAction)

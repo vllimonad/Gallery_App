@@ -8,7 +8,7 @@
 import UIKit
 
 final class ImageDetailsViewController: UIViewController {
-    var viewModel: ImageDetailsViewModelProtocol!
+    var viewModel: ImageDetailsViewModelProtocol?
     private var imageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -26,7 +26,7 @@ final class ImageDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.fetchImage()
+        viewModel?.fetchImage()
         setupLayout()
         setupGestures()
         setupHeartButton()
@@ -59,14 +59,14 @@ final class ImageDetailsViewController: UIViewController {
     
     @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
-        case .right: viewModel.swipedRight()
-        case .left: viewModel.swipedLeft()
+        case .right: viewModel?.swipedRight()
+        case .left: viewModel?.swipedLeft()
         default: break
         }
     }
     
     @objc func heartButtonPressed(){
-        viewModel.heartButtonPressed()
+        viewModel?.heartButtonPressed()
     }
 }
 
