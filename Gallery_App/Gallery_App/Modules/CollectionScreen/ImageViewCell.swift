@@ -8,6 +8,8 @@
 import UIKit
 
 final class ImageViewCell: UICollectionViewCell {
+    static let identifier = "ImageCell"
+    
     private var contentImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .black

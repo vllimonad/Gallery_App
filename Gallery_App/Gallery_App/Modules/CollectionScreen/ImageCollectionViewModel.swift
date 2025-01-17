@@ -6,21 +6,36 @@
 //
 
 import Foundation
+
+protocol ImageCollectionViewModelProtocol {
+    var showFavouriteImages: Bool { get set }
+    func fetchImages()
+    func reloadData()
+    func loadNextPage(_ indexPath: IndexPath)
+    func isImageFavourite(_ indexPath: IndexPath) -> Bool
+    func getImages() -> [Image]
+    func updateFavouriteImages()
+}
+
 final class ImageCollectionViewModel {
     private var allImages = [Image]()
     private var favouriteImages = [Image]()
     private var showOnlyFavourite = false
-    private var requestManager: RequestManager
-    private var dataManager: DataManager
+    private var page = 1
+    private let perPage = 30
+    private let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
+    
+    private var dataManager: DataManagerProtocol
+    private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageCollectionViewModelDelegate?
     
-    init() {
-        requestManager = RequestManager()
-        dataManager = DataManager()
+    init(dataManager: DataManagerProtocol = DataManager(), networkManager: NetworkManagerProtocol = NetworkManager()) {
+        self.dataManager = dataManager
+        self.networkManager = networkManager
         favouriteImages = dataManager.fetchFavouriteImages()
     }
     
-    private func getItemsIndexPathArray() -> [IndexPath] {
+    func getItemsIndexPathArray() -> [IndexPath] {
         var indexPaths = [IndexPath]()
         for index in (allImages.count-30)...(allImages.count-1) {
             indexPaths.append(IndexPath(item: index, section: 0))
@@ -41,11 +56,12 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     
     func fetchImages() {
         let baseUrl = "https://api.unsplash.com/photos"
-        let pageParameter = "page=\(requestManager.getPage())"
-        let perPageParameter = "per_page=\(requestManager.getPerPage())"
-        let clientIdParameter = "client_id=\(requestManager.getClientId())"
+        let pageParameter = "page=\(page)"
+        let perPageParameter = "per_page=\(perPage)"
+        let clientIdParameter = "client_id=\(clientId)"
         let urlString = "\(baseUrl)?\(pageParameter)&\(perPageParameter)&\(clientIdParameter)"
-        NetworkManager().fetchData(with: urlString) { result in
+        
+        networkManager.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 guard let data = try? JSONDecoder().decode([Image].self, from: data) else { return }
@@ -63,14 +79,12 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     
     func loadNextPage(_ indexPath: IndexPath) {
         guard indexPath.item >= allImages.count - 4  else { return }
-        requestManager.nextPage()
-        fetchImages()
+        page += 1
     }
     
     func reloadData() {
         allImages = []
-        requestManager.resetPage()
-        fetchImages()
+        page = 1
     }
     
     func getImages() -> [Image] {
@@ -84,14 +98,4 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     func updateFavouriteImages() {
         favouriteImages = dataManager.fetchFavouriteImages()
     }
-}
-
-protocol ImageCollectionViewModelProtocol {
-    var showFavouriteImages: Bool { get set }
-    func fetchImages()
-    func reloadData()
-    func loadNextPage(_ indexPath: IndexPath)
-    func isImageFavourite(_ indexPath: IndexPath) -> Bool
-    func getImages() -> [Image]
-    func updateFavouriteImages()
 }

@@ -59,10 +59,11 @@ final class ImageDetailsViewController: UIViewController {
     
     @objc private func handleSwipe(_ gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
-        case .right: viewModel?.swipedRight()
-        case .left: viewModel?.swipedLeft()
-        default: break
+            case .right: viewModel?.swipedRight()
+            case .left: viewModel?.swipedLeft()
+            default: break
         }
+        viewModel?.fetchImage()
     }
     
     @objc func heartButtonPressed(){

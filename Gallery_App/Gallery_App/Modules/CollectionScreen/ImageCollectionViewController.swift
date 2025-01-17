@@ -11,6 +11,8 @@ final class ImageCollectionViewController: UIViewController {
     var viewModel: ImageCollectionViewModelProtocol?
     private var collectionView: UICollectionView?
     private var layout: UICollectionViewFlowLayout?
+    private let buttonImageName = "heart"
+    private let buttonFilledImageName = "heart.fill"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +39,7 @@ final class ImageCollectionViewController: UIViewController {
     
     private func setupCollectionView() {
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: layout!)
-        collectionView?.register(ImageViewCell.self, forCellWithReuseIdentifier: "ImageCell")
+        collectionView?.register(ImageViewCell.self, forCellWithReuseIdentifier: ImageViewCell.identifier)
         collectionView?.dataSource = self
         collectionView?.delegate = self
         collectionView?.frame = view.bounds
@@ -46,14 +48,14 @@ final class ImageCollectionViewController: UIViewController {
     
     private func setupNavigationBar() {
         title = "Gallery"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(heartButtonPressed))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: buttonImageName), style: .plain, target: self, action: #selector(heartButtonPressed))
     }
     
     private func updateHeartBarButtonItemImage() {
         if viewModel?.showFavouriteImages ?? false {
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart.fill")
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: buttonFilledImageName)
         } else {
-            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: buttonImageName)
         }
     }
     
@@ -70,7 +72,7 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageViewCell.identifier, for: indexPath) as! ImageViewCell
         guard let imageUrlString = viewModel?.getImages()[indexPath.item].urls.thumb else { return cell }
         cell.loadImage(with: imageUrlString)
         if viewModel?.isImageFavourite(indexPath) ?? false {
@@ -83,8 +85,8 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let images = viewModel?.getImages() else { return }
-        let vc = ImageDetailsViewController()
         let vm = ImageDetailsViewModel(images: images, imageIndex: indexPath.item)
+        let vc = ImageDetailsViewController()
         vc.viewModel = vm
         vm.delegate = vc
         navigationController?.pushViewController(vc, animated: true)
@@ -92,6 +94,7 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         viewModel?.loadNextPage(indexPath)
+        viewModel?.fetchImages()
     }
 }
 
@@ -105,6 +108,7 @@ extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
         let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
             self.viewModel?.reloadData()
             self.collectionView?.reloadData()
+            self.viewModel?.fetchImages()
         }
         let okAction = UIAlertAction(title: "Ok", style: .default)
         ac.addAction(reloadAction)

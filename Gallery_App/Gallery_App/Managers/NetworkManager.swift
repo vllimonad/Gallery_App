@@ -6,8 +6,15 @@
 //
 
 import Foundation
-final class NetworkManager {
-    func fetchData(with urlString: String, completion: @escaping (Result<Data,Error>) -> Void) {
+
+protocol NetworkManagerProtocol {
+    func fetchData(with urlString: String, completion: @escaping (Result<Data,Error>) -> Void)
+}
+
+final class NetworkManager {}
+
+extension NetworkManager: NetworkManagerProtocol {
+    func fetchData(with urlString: String, completion: @escaping (Result<Data, any Error>) -> Void) {
         guard let url = URL(string: urlString) else { return }
         URLSession.shared.dataTask(with: URLRequest(url: url)) { data, response, error in
             if let error = error {
