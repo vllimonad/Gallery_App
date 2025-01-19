@@ -73,9 +73,10 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageViewCell.identifier, for: indexPath) as! ImageViewCell
-        guard let imageUrlString = viewModel?.getImages()[indexPath.item].urls.thumb else { return cell }
+        guard let viewModel = viewModel else { return cell }
+        let imageUrlString = viewModel.getImages()[indexPath.item].urls.thumb
         cell.loadImage(with: imageUrlString)
-        if viewModel?.isImageFavourite(indexPath) ?? false {
+        if viewModel.isImageFavourite(indexPath) {
             cell.markAsFavourite()
         } else {
             cell.removeFavouriteMark()
@@ -99,7 +100,8 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
 }
 
 extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
-    func insertItems(_ indexPaths: [IndexPath]) {
+    func insertItems() {
+        guard let indexPaths = viewModel?.getItemsIndexPathArray() else { return }
         collectionView?.insertItems(at: indexPaths)
     }
     
@@ -118,6 +120,6 @@ extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
 }
 
 protocol ImageCollectionViewModelDelegate: AnyObject {
-    func insertItems(_ indexPaths: [IndexPath])
+    func insertItems()
     func showAlert(_ error: Error)
 }

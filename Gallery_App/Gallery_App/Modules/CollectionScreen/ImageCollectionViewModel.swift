@@ -15,6 +15,7 @@ protocol ImageCollectionViewModelProtocol {
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
     func getImages() -> [Image]
     func updateFavouriteImages()
+    func getItemsIndexPathArray() -> [IndexPath]
 }
 
 final class ImageCollectionViewModel {
@@ -33,14 +34,6 @@ final class ImageCollectionViewModel {
         self.dataManager = dataManager
         self.networkManager = networkManager
         favouriteImages = dataManager.fetchFavouriteImages()
-    }
-    
-    func getItemsIndexPathArray() -> [IndexPath] {
-        var indexPaths = [IndexPath]()
-        for index in (allImages.count-30)...(allImages.count-1) {
-            indexPaths.append(IndexPath(item: index, section: 0))
-        }
-        return indexPaths
     }
 }
 
@@ -67,7 +60,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
                 guard let data = try? JSONDecoder().decode([Image].self, from: data) else { return }
                 DispatchQueue.main.async {
                     self.allImages.append(contentsOf: data)
-                    self.delegate?.insertItems(self.getItemsIndexPathArray())
+                    self.delegate?.insertItems()
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -97,5 +90,13 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     
     func updateFavouriteImages() {
         favouriteImages = dataManager.fetchFavouriteImages()
+    }
+    
+    func getItemsIndexPathArray() -> [IndexPath] {
+        var indexPaths = [IndexPath]()
+        for index in (allImages.count-30)...(allImages.count-1) {
+            indexPaths.append(IndexPath(item: index, section: 0))
+        }
+        return indexPaths
     }
 }
