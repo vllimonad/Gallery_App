@@ -9,6 +9,7 @@ import UIKit
 
 final class ImageViewCell: UICollectionViewCell {
     static let identifier = "ImageCell"
+    var viewModel: ImageViewCellViewModelProtocol?
     
     private var contentImageView = {
         let imageView = UIImageView()
@@ -45,25 +46,6 @@ final class ImageViewCell: UICollectionViewCell {
             heartImageView.bottomAnchor.constraint(equalTo: contentImageView.bottomAnchor, constant: -10)
         ])
     }
-}
-
-extension ImageViewCell {
-    func loadImage(with urlString: String) {
-        NetworkManager().fetchData(with: urlString) { result in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self.contentImageView.contentMode = .scaleAspectFill
-                    self.contentImageView.image = UIImage(data: data)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.contentImageView.contentMode = .center
-                    self.contentImageView.image = UIImage(systemName: "arrow.counterclockwise")
-                }
-            }
-        }
-    }
     
     func markAsFavourite() {
         heartImageView.isHidden = false
@@ -72,4 +54,21 @@ extension ImageViewCell {
     func removeFavouriteMark() {
         heartImageView.isHidden = true
     }
+}
+
+extension ImageViewCell: ImageViewCellViewModelDelegate {
+    func showImage(_ data: Data) {
+        contentImageView.contentMode = .scaleAspectFill
+        contentImageView.image = UIImage(data: data)
+    }
+    
+    func showError() {
+        contentImageView.contentMode = .center
+        contentImageView.image = UIImage(systemName: "arrow.counterclockwise")
+    }
+}
+
+protocol ImageViewCellViewModelDelegate: AnyObject {
+    func showImage(_ data: Data)
+    func showError()
 }
