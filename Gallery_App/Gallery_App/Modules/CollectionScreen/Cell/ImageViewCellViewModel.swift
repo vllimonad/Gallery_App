@@ -7,27 +7,30 @@
 
 import Foundation
 protocol ImageViewCellViewModelProtocol {
-    func loadImage(with urlString: String)
+    func loadImage()
 }
 
 class ImageViewCellViewModel {
     private var networkManager: NetworkManagerProtocol
+    private var image: Image
     weak var delegate: ImageViewCellViewModelDelegate?
     
-    init(networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(image: Image, networkManager: NetworkManagerProtocol = NetworkManager()) {
+        self.image = image
         self.networkManager = networkManager
     }
 }
 
 extension ImageViewCellViewModel: ImageViewCellViewModelProtocol {
-    func loadImage(with urlString: String) {
+    func loadImage() {
+        let urlString = image.urls.thumb
         networkManager.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
                     self.delegate?.showImage(data)
                 }
-            case .failure(let error):
+            case .failure:
                 DispatchQueue.main.async {
                     self.delegate?.showError()
                 }

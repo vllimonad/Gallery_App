@@ -74,11 +74,11 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageViewCell.identifier, for: indexPath) as! ImageViewCell
         guard let viewModel = viewModel else { return cell }
-        let cellViewModel = ImageViewCellViewModel()
+        let image = viewModel.getImages()[indexPath.item]
+        let cellViewModel = ImageViewCellViewModel(image: image)
         cell.viewModel = cellViewModel
         cellViewModel.delegate = cell
-        let imageUrlString = viewModel.getImages()[indexPath.item].urls.thumb
-        cell.viewModel?.loadImage(with: imageUrlString)
+        cellViewModel.loadImage()
         if viewModel.isImageFavourite(indexPath) {
             cell.markAsFavourite()
         } else {
@@ -97,8 +97,10 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        viewModel?.loadNextPage(indexPath)
-        viewModel?.fetchImages()
+        guard let viewModel = viewModel else { return }
+        guard !viewModel.showFavouriteImages else { return }
+        viewModel.loadNextPage(indexPath)
+        viewModel.fetchImages()
     }
 }
 
