@@ -13,11 +13,12 @@ Application is available from iOS 15 and consists of two screens:
 
 ### Image Collection Screen
 
-<img src="https://github.com/user-attachments/assets/e6ea9510-15a7-4547-a793-3deda82bb815" width="265" >
-<img src="https://github.com/user-attachments/assets/3a2769eb-1b27-4457-882a-130357c41143" width="265" >
+<img src="https://github.com/user-attachments/assets/0d3fff9d-8ea2-4ec4-a1a2-2dde46290820" width="265" >
+<img src="https://github.com/user-attachments/assets/87921206-fe63-44f8-91c3-5196d9acd0d3" width="265" >
+<img src="https://github.com/user-attachments/assets/91c1e738-77c7-4a9b-a8fc-8a7a60c2431b" width="265" >
 <br><br>
 
-Image Collection Screen displays a grid of thumbnail images fetched from Unsplash API. Each thumbnail is tappable and leads to the Image Details Screen. Implemented pagination to load more images as the user scrolls to the bottom of Image Collection Screen.
+Image Collection Screen displays a grid of thumbnail images fetched from Unsplash API. Each thumbnail is tappable and leads to the Image Details Screen. Implemented pagination to load more images as the user scrolls to the bottom of Image Collection Screen. User can apply filter to show only favourite images by tapping on heart-shaped button in navigation bar.
 <br><br>
 
 ### Image Details Screen
@@ -41,7 +42,7 @@ Implemented errors handling and displaying error messages to the user using aler
 
 ### Data storing
 
-Information about favourite images is stored locally on the user device. It is implemented by saving favourite image ID.  
+Information about favourite images is stored locally on the user device. It is implemented by saving favourite image ID, image data and description.  
 
 
 ## Technologies & Implementation
