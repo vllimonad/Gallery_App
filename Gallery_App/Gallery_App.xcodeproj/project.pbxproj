@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2B13601E2D3D6AC600E8536A /* ImageViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13601D2D3D6AC600E8536A /* ImageViewCellViewModel.swift */; };
+		2B4950C92D4014BB001FE206 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4950C82D4014BB001FE206 /* CoreDataManager.swift */; };
+		2B4950CC2D4016F2001FE206 /* Gallery_App.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B4950CA2D4016F2001FE206 /* Gallery_App.xcdatamodeld */; };
 		2BB0361E2CF8DD9A0030B376 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB0361D2CF8DD9A0030B376 /* AppDelegate.swift */; };
 		2BB036202CF8DD9A0030B376 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB0361F2CF8DD9A0030B376 /* SceneDelegate.swift */; };
 		2BB036222CF8DD9A0030B376 /* ImageCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB036212CF8DD9A0030B376 /* ImageCollectionViewController.swift */; };
@@ -37,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		2B13601D2D3D6AC600E8536A /* ImageViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewCellViewModel.swift; sourceTree = "<group>"; };
+		2B4950C82D4014BB001FE206 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		2B4950CB2D4016F2001FE206 /* Gallery_App.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Gallery_App.xcdatamodel; sourceTree = "<group>"; };
 		2BB0361A2CF8DD9A0030B376 /* Gallery_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Gallery_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2BB0361D2CF8DD9A0030B376 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2BB0361F2CF8DD9A0030B376 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 				2BB0363C2CF8F2880030B376 /* Models */,
 				2BB0363B2CF8F27D0030B376 /* Resources */,
 				2BB0362B2CF8DD9B0030B376 /* Info.plist */,
+				2B4950CA2D4016F2001FE206 /* Gallery_App.xcdatamodeld */,
 			);
 			path = Gallery_App;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 			children = (
 				2BB036352CF8E43C0030B376 /* NetworkManager.swift */,
 				2BB036662D00823C0030B376 /* DataManager.swift */,
+				2B4950C82D4014BB001FE206 /* CoreDataManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -302,7 +308,9 @@
 				2B13601E2D3D6AC600E8536A /* ImageViewCellViewModel.swift in Sources */,
 				2BB036432CF9089B0030B376 /* ImageDetailsViewModel.swift in Sources */,
 				2BB036222CF8DD9A0030B376 /* ImageCollectionViewController.swift in Sources */,
+				2B4950CC2D4016F2001FE206 /* Gallery_App.xcdatamodeld in Sources */,
 				2BB036342CF8DFC40030B376 /* ImageCollectionViewModel.swift in Sources */,
+				2B4950C92D4014BB001FE206 /* CoreDataManager.swift in Sources */,
 				2BB036382CF8E63C0030B376 /* Image.swift in Sources */,
 				2BB0361E2CF8DD9A0030B376 /* AppDelegate.swift in Sources */,
 				2BB036362CF8E43C0030B376 /* NetworkManager.swift in Sources */,
@@ -590,6 +598,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2B4950CA2D4016F2001FE206 /* Gallery_App.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2B4950CB2D4016F2001FE206 /* Gallery_App.xcdatamodel */,
+			);
+			currentVersion = 2B4950CB2D4016F2001FE206 /* Gallery_App.xcdatamodel */;
+			name = Gallery_App.xcdatamodeld;
+			path = /Users/uladzislau/Swift/Gallery_App/Gallery_App/Gallery_App/Gallery_App.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2BB036122CF8DD9A0030B376 /* Project object */;
 }
