@@ -13,14 +13,14 @@ protocol ImageCollectionViewModelProtocol {
     func reloadData()
     func loadNextPage(_ indexPath: IndexPath)
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
-    func getImages() -> [Image]
+    func getImages() -> [FetchedImage]
     func updateFavouriteImages()
     func getItemsIndexPathArray() -> [IndexPath]
 }
 
 final class ImageCollectionViewModel {
-    private var allImages = [Image]()
-    private var favouriteImages = [Image]()
+    private var allImages = [FetchedImage]()
+    private var favouriteImages = [FetchedImage]()
     private var showOnlyFavourite = false
     private var page = 1
     private let perPage = 30
@@ -57,7 +57,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         networkManager.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
-                guard let data = try? JSONDecoder().decode([Image].self, from: data) else { return }
+                guard let data = try? JSONDecoder().decode([FetchedImage].self, from: data) else { return }
                 DispatchQueue.main.async {
                     self.allImages.append(contentsOf: data)
                     self.delegate?.insertItems()
@@ -80,7 +80,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         page = 1
     }
     
-    func getImages() -> [Image] {
+    func getImages() -> [FetchedImage] {
         showOnlyFavourite ? favouriteImages : allImages
     }
     

@@ -15,14 +15,14 @@ protocol ImageDetailsViewModelProtocol {
 }
 
 final class ImageDetailsViewModel {
-    private var images: [Image]
-    private var favouriteImages = [Image]()
+    private var images: [FetchedImage]
+    private var favouriteImages = [FetchedImage]()
     private var imageIndex: Int
     private var dataManager: DataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageDetailsViewModelDelegate?
     
-    init(images: [Image], imageIndex: Int, dataManager: DataManagerProtocol = DataManager(), networkManager: NetworkManager = NetworkManager()) {
+    init(images: [FetchedImage], imageIndex: Int, dataManager: DataManagerProtocol = DataManager(), networkManager: NetworkManager = NetworkManager()) {
         self.images = images
         self.imageIndex = imageIndex
         self.dataManager = dataManager

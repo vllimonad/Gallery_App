@@ -12,10 +12,10 @@ protocol ImageViewCellViewModelProtocol {
 
 class ImageViewCellViewModel {
     private var networkManager: NetworkManagerProtocol
-    private var image: Image
+    private var image: FetchedImage
     weak var delegate: ImageViewCellViewModelDelegate?
     
-    init(image: Image, networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(image: FetchedImage, networkManager: NetworkManagerProtocol = NetworkManager()) {
         self.image = image
         self.networkManager = networkManager
     }

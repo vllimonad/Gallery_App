@@ -17,7 +17,7 @@ final class ImageDetailsViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         var urlType = URLType(regular: "link", thumb: "link")
-        var image = Image(id: "0", alt_description: "image 1", urls: urlType)
+        var image = FetchedImage(id: "0", alt_description: "image 1", urls: urlType)
         dataManager = SpyDataManager()
         sut = ImageDetailsViewModel(images: [image],
                                     imageIndex: 0,
@@ -32,16 +32,16 @@ final class ImageDetailsViewModelTests: XCTestCase {
 
 
 final class SpyDataManager {
-    var fetchedImages: [Image]?
-    var savedImages: [Image]?
+    var fetchedImages: [FetchedImage]?
+    var savedImages: [FetchedImage]?
 }
 
 extension SpyDataManager: DataManagerProtocol {
-    func fetchFavouriteImages() -> [Image] {
+    func fetchFavouriteImages() -> [FetchedImage] {
         fetchedImages ?? []
     }
     
-    func saveFavouriteImages(_ favouriteImages: [Image]) {
+    func saveFavouriteImages(_ favouriteImages: [FetchedImage]) {
         savedImages = favouriteImages
     }
 }
