@@ -16,39 +16,48 @@ protocol ImageDetailsViewModelProtocol {
 
 final class ImageDetailsViewModel {
     private var images: [FetchedImage]
-    private var favouriteImages = [FetchedImage]()
+    private var favouriteImages = [ImageEntity]()
     private var imageIndex: Int
-    private var dataManager: DataManagerProtocol
+    private var dataManager: CoreDataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageDetailsViewModelDelegate?
     
-    init(images: [FetchedImage], imageIndex: Int, dataManager: DataManagerProtocol = DataManager(), networkManager: NetworkManager = NetworkManager()) {
+    init(images: [FetchedImage], imageIndex: Int, dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManager = NetworkManager()) {
         self.images = images
         self.imageIndex = imageIndex
         self.dataManager = dataManager
         self.networkManager = networkManager
-        favouriteImages = dataManager.fetchFavouriteImages()
+        favouriteImages = dataManager.fetchImages()
+    }
+
+    func isImageFavourite() -> Bool {
+        let id = images[imageIndex].id
+        return favouriteImages.contains(where: { $0.id == id })
+    }
+    
+    func addImageToFavourite() {
+        guard let imageEntity = dataManager.saveImage(images[imageIndex]) else { return }
+        favouriteImages.append(imageEntity)
+    }
+    
+    func removeImageFromFavourite() {
+        let id = images[imageIndex].id
+        guard let image = favouriteImages.first(where: { $0.id == id }) else { return }
+        dataManager.deleteImage(image)
+        favouriteImages.removeAll(where: { $0.id == id })
     }
     
     func updateHeartButtonImage() {
-        let id = images[imageIndex].id
-        if favouriteImages.contains(where: { $0.id == id }) {
+        if isImageFavourite() {
             delegate?.markAsFavourite()
         } else {
             delegate?.removeFavouriteMark()
         }
     }
     
-    func addImageToFavourite() {
-        let image = images[imageIndex]
-        favouriteImages.append(image)
-        dataManager.saveFavouriteImages(favouriteImages)
-    }
-    
-    func removeImageFromFavourite() {
-        let id = images[imageIndex].id
-        favouriteImages.removeAll(where: { $0.id == id })
-        dataManager.saveFavouriteImages(favouriteImages)
+    func updateImage(with data: Data) {
+        let imageDescription = images[imageIndex].alt_description
+        delegate?.updateImageDetails(with: data, and: imageDescription)
     }
 }
 
@@ -59,8 +68,7 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
-                    let imageDescription = self.images[self.imageIndex].alt_description
-                    self.delegate?.updateImageDetails(with: data, and: imageDescription)
+                    self.updateImage(with: data)
                     self.updateHeartButtonImage()
                 }
             case .failure(let error):
@@ -82,8 +90,7 @@ extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     }
     
     func heartButtonPressed() {
-        let id = images[imageIndex].id
-        if favouriteImages.contains(where: { $0.id == id }) {
+        if isImageFavourite() {
             removeImageFromFavourite()
             delegate?.removeFavouriteMark()
         } else {

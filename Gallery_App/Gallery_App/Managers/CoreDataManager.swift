@@ -11,31 +11,37 @@ import UIKit
 
 protocol CoreDataManagerProtocol {
     func fetchImages() -> [ImageEntity]
-    func saveImage(_ imageDTO: FetchedImage)
-    func deleteImage(_ id: String)
+    func saveImage(_ image: FetchedImage) -> ImageEntity?
+    func deleteImage(_ image: ImageEntity)
 }
 
 final class CoreDataManager {
     private lazy var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-}
-
-extension CoreDataManager: CoreDataManagerProtocol {
-    func deleteImage(_ id: String) {
-    }
     
-    func saveImage(_ image: FetchedImage) {
-        guard let entity = NSEntityDescription.entity(forEntityName: "Image", in: context) else { return }
-        let imageEntity = ImageEntity(entity: entity, insertInto: context)
-        imageEntity.id = image.id
-        imageEntity.title = image.alt_description
-        imageEntity.regularUrl = image.urls.regular
-        imageEntity.thumbUrl = image.urls.thumb
-        
+    private func saveContext() {
         do {
             try context.save()
         } catch let error {
             print(error.localizedDescription)
         }
+    }
+}
+
+extension CoreDataManager: CoreDataManagerProtocol {
+    func deleteImage(_ image: ImageEntity) {
+        context.delete(image)
+        saveContext()
+    }
+    
+    func saveImage(_ image: FetchedImage) -> ImageEntity? {
+        guard let entity = NSEntityDescription.entity(forEntityName: "Image", in: context) else { return nil }
+        let imageEntity = ImageEntity(entity: entity, insertInto: context)
+        imageEntity.id = image.id
+        imageEntity.title = image.alt_description
+        imageEntity.regularUrl = image.urls.regular
+        imageEntity.thumbUrl = image.urls.thumb
+        saveContext()
+        return imageEntity
     }
     
     func fetchImages() -> [ImageEntity] {
