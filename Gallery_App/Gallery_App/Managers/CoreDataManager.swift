@@ -10,7 +10,7 @@ import CoreData
 import UIKit
 
 protocol CoreDataManagerProtocol {
-    func fetchImages() -> [Image]
+    func fetchImages() -> [ImageEntity]
     func saveImage(_ imageDTO: FetchedImage)
     func deleteImage(_ id: String)
 }
@@ -21,16 +21,15 @@ final class CoreDataManager {
 
 extension CoreDataManager: CoreDataManagerProtocol {
     func deleteImage(_ id: String) {
-        
     }
     
-    func saveImage(_ imageDTO: FetchedImage) {
+    func saveImage(_ image: FetchedImage) {
         guard let entity = NSEntityDescription.entity(forEntityName: "Image", in: context) else { return }
-        let image = Image(entity: entity, insertInto: context)
-        image.id = imageDTO.id
-        image.name = imageDTO.alt_description
-        image.regularURL = imageDTO.urls.regular
-        image.thumbURL = imageDTO.urls.thumb
+        let imageEntity = ImageEntity(entity: entity, insertInto: context)
+        imageEntity.id = image.id
+        imageEntity.title = image.alt_description
+        imageEntity.regularUrl = image.urls.regular
+        imageEntity.thumbUrl = image.urls.thumb
         
         do {
             try context.save()
@@ -39,9 +38,9 @@ extension CoreDataManager: CoreDataManagerProtocol {
         }
     }
     
-    func fetchImages() -> [Image] {
-        var images = [Image]()
-        let request = Image.fetchRequest()
+    func fetchImages() -> [ImageEntity] {
+        var images = [ImageEntity]()
+        let request = ImageEntity.fetchRequest()
         
         do {
             images = try context.fetch(request)
