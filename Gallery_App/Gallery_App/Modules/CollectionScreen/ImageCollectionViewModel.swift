@@ -20,20 +20,20 @@ protocol ImageCollectionViewModelProtocol {
 
 final class ImageCollectionViewModel {
     private var allImages = [FetchedImage]()
-    private var favouriteImages = [FetchedImage]()
+    private var favouriteImages = [ImageEntity]()
     private var showOnlyFavourite = false
     private var page = 1
     private let perPage = 30
     private let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
     
-    private var dataManager: DataManagerProtocol
+    private var dataManager: CoreDataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageCollectionViewModelDelegate?
     
-    init(dataManager: DataManagerProtocol = DataManager(), networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManagerProtocol = NetworkManager()) {
         self.dataManager = dataManager
         self.networkManager = networkManager
-        favouriteImages = dataManager.fetchFavouriteImages()
+        favouriteImages = dataManager.fetchImages()
     }
 }
 
@@ -54,17 +54,17 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         let clientIdParameter = "client_id=\(clientId)"
         let urlString = "\(baseUrl)?\(pageParameter)&\(perPageParameter)&\(clientIdParameter)"
         
-        networkManager.fetchData(with: urlString) { result in
+        networkManager.fetchData(with: urlString) { [weak self] result in
             switch result {
             case .success(let data):
                 guard let data = try? JSONDecoder().decode([FetchedImage].self, from: data) else { return }
-                DispatchQueue.main.async {
-                    self.allImages.append(contentsOf: data)
-                    self.delegate?.insertItems()
+                self?.allImages.append(contentsOf: data)
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.insertItems()
                 }
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.delegate?.showAlert(error)
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.showAlert(error)
                 }
             }
         }
@@ -89,7 +89,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     }
     
     func updateFavouriteImages() {
-        favouriteImages = dataManager.fetchFavouriteImages()
+        favouriteImages = dataManager.fetchImages()
     }
     
     func getItemsIndexPathArray() -> [IndexPath] {

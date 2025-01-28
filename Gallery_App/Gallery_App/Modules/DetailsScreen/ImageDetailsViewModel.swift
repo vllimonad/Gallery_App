@@ -64,16 +64,16 @@ final class ImageDetailsViewModel {
 extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     func fetchImage() {
         let urlString = images[imageIndex].urls.regular
-        networkManager.fetchData(with: urlString) { result in
+        networkManager.fetchData(with: urlString) { [weak self] result in
             switch result {
             case .success(let data):
-                DispatchQueue.main.async {
-                    self.updateImage(with: data)
-                    self.updateHeartButtonImage()
+                DispatchQueue.main.async { [weak self] in
+                    self?.updateImage(with: data)
+                    self?.updateHeartButtonImage()
                 }
             case .failure(let error):
-                DispatchQueue.main.async {
-                    self.delegate?.showAlert(error)
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.showAlert(error)
                 }
             }
         }
