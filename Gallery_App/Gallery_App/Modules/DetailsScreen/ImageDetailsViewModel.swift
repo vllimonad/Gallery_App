@@ -15,14 +15,14 @@ protocol ImageDetailsViewModelProtocol {
 }
 
 final class ImageDetailsViewModel {
-    private var images: [FetchedImage]
-    private var favouriteImages = [ImageEntity]()
+    private var images: [Image]
+    private var favouriteImages = [Image]()
     private var imageIndex: Int
     private var dataManager: CoreDataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageDetailsViewModelDelegate?
     
-    init(images: [FetchedImage], imageIndex: Int, dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManager = NetworkManager()) {
+    init(images: [Image], imageIndex: Int, dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManager = NetworkManager()) {
         self.images = images
         self.imageIndex = imageIndex
         self.dataManager = dataManager
@@ -36,8 +36,9 @@ final class ImageDetailsViewModel {
     }
     
     func addImageToFavourite() {
-        guard let imageEntity = dataManager.saveImage(images[imageIndex]) else { return }
-        favouriteImages.append(imageEntity)
+        let image = images[imageIndex]
+        dataManager.insertImage(image)
+        favouriteImages.append(image)
     }
     
     func removeImageFromFavourite() {
@@ -56,14 +57,14 @@ final class ImageDetailsViewModel {
     }
     
     func updateImage(with data: Data) {
-        let imageDescription = images[imageIndex].alt_description
+        let imageDescription = images[imageIndex].title
         delegate?.updateImageDetails(with: data, and: imageDescription)
     }
 }
 
 extension ImageDetailsViewModel: ImageDetailsViewModelProtocol {
     func fetchImage() {
-        let urlString = images[imageIndex].urls.regular
+        let urlString = images[imageIndex].regularUrl
         networkManager.fetchData(with: urlString) { [weak self] result in
             switch result {
             case .success(let data):

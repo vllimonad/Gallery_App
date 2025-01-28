@@ -13,14 +13,14 @@ protocol ImageCollectionViewModelProtocol {
     func reloadData()
     func loadNextPage(_ indexPath: IndexPath)
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
-    func getImages() -> [FetchedImage]
+    func getImages() -> [Image]
     func updateFavouriteImages()
     func getItemsIndexPathArray() -> [IndexPath]
 }
 
 final class ImageCollectionViewModel {
-    private var allImages = [FetchedImage]()
-    private var favouriteImages = [ImageEntity]()
+    private var images = [Image]()
+    private var favouriteImages = [Image]()
     private var showOnlyFavourite = false
     private var page = 1
     private let perPage = 30
@@ -58,7 +58,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
             switch result {
             case .success(let data):
                 guard let data = try? JSONDecoder().decode([FetchedImage].self, from: data) else { return }
-                self?.allImages.append(contentsOf: data)
+                //self?.images.append(contentsOf: data)
                 DispatchQueue.main.async { [weak self] in
                     self?.delegate?.insertItems()
                 }
@@ -71,21 +71,21 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     }
     
     func loadNextPage(_ indexPath: IndexPath) {
-        guard indexPath.item >= allImages.count - 4  else { return }
+        guard indexPath.item >= images.count - 4  else { return }
         page += 1
     }
     
     func reloadData() {
-        allImages = []
+        images = []
         page = 1
     }
     
-    func getImages() -> [FetchedImage] {
-        showOnlyFavourite ? favouriteImages : allImages
+    func getImages() -> [Image] {
+        showOnlyFavourite ? favouriteImages : images
     }
     
     func isImageFavourite(_ indexPath: IndexPath) -> Bool {
-        showOnlyFavourite ? false : favouriteImages.contains(where: { $0.id == allImages[indexPath.item].id })
+        showOnlyFavourite ? false : favouriteImages.contains(where: { $0.id == images[indexPath.item].id })
     }
     
     func updateFavouriteImages() {
@@ -94,7 +94,7 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     
     func getItemsIndexPathArray() -> [IndexPath] {
         var indexPaths = [IndexPath]()
-        for index in (allImages.count-30)...(allImages.count-1) {
+        for index in (images.count-30)...(images.count-1) {
             indexPaths.append(IndexPath(item: index, section: 0))
         }
         return indexPaths
