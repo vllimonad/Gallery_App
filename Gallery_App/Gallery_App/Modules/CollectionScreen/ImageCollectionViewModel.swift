@@ -26,11 +26,13 @@ final class ImageCollectionViewModel {
     private let perPage = 30
     private let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
     
+    private var mapper: ImageMapper
     private var dataManager: CoreDataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageCollectionViewModelDelegate?
     
-    init(dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(mapper: ImageMapper = ImageMapper(), dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManagerProtocol = NetworkManager()) {
+        self.mapper = mapper
         self.dataManager = dataManager
         self.networkManager = networkManager
         favouriteImages = dataManager.fetchImages()
@@ -57,8 +59,8 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         networkManager.fetchData(with: urlString) { [weak self] result in
             switch result {
             case .success(let data):
-                guard let data = try? JSONDecoder().decode([FetchedImage].self, from: data) else { return }
-                //self?.images.append(contentsOf: data)
+                guard let newImages = self?.mapper.map(data) else { return }
+                self?.images.append(contentsOf: newImages)
                 DispatchQueue.main.async { [weak self] in
                     self?.delegate?.insertItems()
                 }

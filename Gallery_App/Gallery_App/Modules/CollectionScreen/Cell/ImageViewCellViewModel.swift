@@ -12,10 +12,10 @@ protocol ImageViewCellViewModelProtocol {
 
 class ImageViewCellViewModel {
     private var networkManager: NetworkManagerProtocol
-    private var image: FetchedImage
+    private var image: Image
     weak var delegate: ImageViewCellViewModelDelegate?
     
-    init(image: FetchedImage, networkManager: NetworkManagerProtocol = NetworkManager()) {
+    init(image: Image, networkManager: NetworkManagerProtocol = NetworkManager()) {
         self.image = image
         self.networkManager = networkManager
     }
@@ -23,7 +23,7 @@ class ImageViewCellViewModel {
 
 extension ImageViewCellViewModel: ImageViewCellViewModelProtocol {
     func loadImage() {
-        let urlString = image.urls.thumb
+        let urlString = image.thumbUrl
         networkManager.fetchData(with: urlString) { result in
             switch result {
             case .success(let data):
