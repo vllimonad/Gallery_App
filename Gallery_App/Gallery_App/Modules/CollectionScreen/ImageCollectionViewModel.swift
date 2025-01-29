@@ -10,8 +10,8 @@ import Foundation
 protocol ImageCollectionViewModelProtocol {
     var showFavouriteImages: Bool { get set }
     func fetchImages()
-    func reloadData()
-    func loadNextPage(_ indexPath: IndexPath)
+    func reloadImages()
+    func loadNextImages(_ indexPath: IndexPath)
     func isImageFavourite(_ indexPath: IndexPath) -> Bool
     func getImages() -> [Image]
     func updateFavouriteImages()
@@ -21,8 +21,13 @@ protocol ImageCollectionViewModelProtocol {
 final class ImageCollectionViewModel {
     private var images = [Image]()
     private var favouriteImages = [Image]()
-    private var showOnlyFavourite = false
-    private var page = 1
+    private var showOnlyFavouriteImages = false
+    
+    private var page = 1 {
+        didSet {
+            fetchImages()
+        }
+    }
     private let perPage = 30
     private let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
     
@@ -42,10 +47,10 @@ final class ImageCollectionViewModel {
 extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
     var showFavouriteImages: Bool {
         get {
-            showOnlyFavourite
+            showOnlyFavouriteImages
         }
         set {
-            showOnlyFavourite = newValue
+            showOnlyFavouriteImages = newValue
         }
     }
     
@@ -59,9 +64,9 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         networkManager.fetchData(with: urlString) { [weak self] result in
             switch result {
             case .success(let data):
-                guard let newImages = self?.mapper.map(data) else { return }
-                self?.images.append(contentsOf: newImages)
                 DispatchQueue.main.async { [weak self] in
+                    guard let newImages = self?.mapper.map(data) else { return }
+                    self?.images.append(contentsOf: newImages)
                     self?.delegate?.insertItems()
                 }
             case .failure(let error):
@@ -72,22 +77,23 @@ extension ImageCollectionViewModel: ImageCollectionViewModelProtocol {
         }
     }
     
-    func loadNextPage(_ indexPath: IndexPath) {
-        guard indexPath.item >= images.count - 4  else { return }
+    func loadNextImages(_ indexPath: IndexPath) {
+        guard !showOnlyFavouriteImages else { return }
+        guard indexPath.item + 4 >= images.count else { return }
         page += 1
     }
     
-    func reloadData() {
+    func reloadImages() {
         images = []
         page = 1
     }
     
     func getImages() -> [Image] {
-        showOnlyFavourite ? favouriteImages : images
+        showOnlyFavouriteImages ? favouriteImages : images
     }
     
     func isImageFavourite(_ indexPath: IndexPath) -> Bool {
-        showOnlyFavourite ? false : favouriteImages.contains(where: { $0.id == images[indexPath.item].id })
+        showOnlyFavouriteImages ? false : favouriteImages.contains(where: { $0.id == images[indexPath.item].id })
     }
     
     func updateFavouriteImages() {

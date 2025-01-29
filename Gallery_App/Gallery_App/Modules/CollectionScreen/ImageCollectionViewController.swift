@@ -97,10 +97,7 @@ extension ImageCollectionViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let viewModel = viewModel else { return }
-        guard !viewModel.showFavouriteImages else { return }
-        viewModel.loadNextPage(indexPath)
-        viewModel.fetchImages()
+        viewModel?.loadNextImages(indexPath)
     }
 }
 
@@ -112,10 +109,9 @@ extension ImageCollectionViewController: ImageCollectionViewModelDelegate {
     
     func showAlert(_ error: any Error) {
         let ac = UIAlertController(title: "Loading error", message: error.localizedDescription, preferredStyle: .alert)
-        let reloadAction = UIAlertAction(title: "Reload", style: .default) { _ in
-            self.viewModel?.reloadData()
-            self.collectionView?.reloadData()
-            self.viewModel?.fetchImages()
+        let reloadAction = UIAlertAction(title: "Reload", style: .default) { [weak self] _ in
+            self?.viewModel?.reloadImages()
+            self?.collectionView?.reloadData()
         }
         let okAction = UIAlertAction(title: "Ok", style: .default)
         ac.addAction(reloadAction)

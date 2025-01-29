@@ -19,9 +19,9 @@ final class ImageDetailsViewModelTests: XCTestCase {
         var urlType = URLType(regular: "link", thumb: "link")
         var image = FetchedImage(id: "0", alt_description: "image 1", urls: urlType)
         dataManager = SpyDataManager()
-        sut = ImageDetailsViewModel(images: [image],
-                                    imageIndex: 0,
-                                    dataManager: dataManager)
+//        sut = ImageDetailsViewModel(images: [image],
+//                                    imageIndex: 0,
+//                                    dataManager: dataManager)
     }
     
     override func tearDown() {

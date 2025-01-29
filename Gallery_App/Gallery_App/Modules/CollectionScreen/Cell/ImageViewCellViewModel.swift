@@ -23,16 +23,15 @@ class ImageViewCellViewModel {
 
 extension ImageViewCellViewModel: ImageViewCellViewModelProtocol {
     func loadImage() {
-        let urlString = image.thumbUrl
-        networkManager.fetchData(with: urlString) { result in
+        networkManager.fetchData(with: image.thumbUrl) { [weak self] result in
             switch result {
             case .success(let data):
-                DispatchQueue.main.async {
-                    self.delegate?.showImage(data)
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.showImage(data)
                 }
             case .failure:
-                DispatchQueue.main.async {
-                    self.delegate?.showError()
+                DispatchQueue.main.async { [weak self] in
+                    self?.delegate?.showError()
                 }
             }
         }

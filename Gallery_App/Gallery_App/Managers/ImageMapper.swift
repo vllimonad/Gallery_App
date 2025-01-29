@@ -13,9 +13,10 @@ final class ImageMapper {
         var images = [Image]()
         for fetchedImage in fetchedImages {
             let id = fetchedImage["id"] as! String
-            let title = fetchedImage["title"] as! String
-            let regularUrl = fetchedImage["regularUrl"] as! String
-            let thumbUrl = fetchedImage["thumbUrl"] as! String
+            let title = fetchedImage["alt_description"] as? String ?? ""
+            let urls = fetchedImage["urls"] as! [String: String]
+            let regularUrl = urls["regular"]!
+            let thumbUrl = urls["thumb"]!
             let image = Image(id: id, title: title, regularUrl: regularUrl, thumbUrl: thumbUrl)
             images.append(image)
         }
