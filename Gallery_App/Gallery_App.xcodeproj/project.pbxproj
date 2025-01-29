@@ -143,7 +143,7 @@
 			children = (
 				2BB036392CF8F2630030B376 /* Application */,
 				2B8CE9422D08F31900373EDD /* Modules */,
-				2BB0363E2CF8F29C0030B376 /* Managers */,
+				2BB0363E2CF8F29C0030B376 /* Helpers */,
 				2BB0363C2CF8F2880030B376 /* Models */,
 				2BB0363B2CF8F27D0030B376 /* Resources */,
 				2BB0362B2CF8DD9B0030B376 /* Info.plist */,
@@ -179,7 +179,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		2BB0363E2CF8F29C0030B376 /* Managers */ = {
+		2BB0363E2CF8F29C0030B376 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				2BB036352CF8E43C0030B376 /* NetworkManager.swift */,
@@ -187,7 +187,7 @@
 				2B4950C82D4014BB001FE206 /* CoreDataManager.swift */,
 				2B365D1C2D49727300912715 /* ImageMapper.swift */,
 			);
-			path = Managers;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		2BBB32FC2D3433FA00F73484 /* Gallery_AppTests */ = {

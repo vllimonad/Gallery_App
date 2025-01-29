@@ -10,9 +10,10 @@ import CoreData
 import UIKit
 
 protocol CoreDataManagerProtocol {
-    func fetchImages() -> [ImageEntity]
-    func saveImage(_ image: FetchedImage) -> ImageEntity?
-    func deleteImage(_ image: ImageEntity)
+    func insertImage(_ image: Image)
+    func deleteImage(_ image: Image)
+    func fetchImages() -> [Image]
+    func fetchImageById(_ id: String) -> ImageEntity?
 }
 
 final class CoreDataManager {
@@ -28,32 +29,43 @@ final class CoreDataManager {
 }
 
 extension CoreDataManager: CoreDataManagerProtocol {
-    func deleteImage(_ image: ImageEntity) {
-        context.delete(image)
-        saveContext()
-    }
-    
-    func saveImage(_ image: FetchedImage) -> ImageEntity? {
-        guard let entity = NSEntityDescription.entity(forEntityName: "Image", in: context) else { return nil }
+    func insertImage(_ image: Image){
+        guard let entity = NSEntityDescription.entity(forEntityName: "ImageEntity", in: context) else { return }
         let imageEntity = ImageEntity(entity: entity, insertInto: context)
         imageEntity.id = image.id
-        imageEntity.title = image.alt_description
-        imageEntity.regularUrl = image.urls.regular
-        imageEntity.thumbUrl = image.urls.thumb
-        saveContext()
-        return imageEntity
+        imageEntity.title = image.title
+        imageEntity.regularUrl = image.regularUrl
+        imageEntity.thumbUrl = image.thumbUrl
+        self.saveContext()
     }
     
-    func fetchImages() -> [ImageEntity] {
-        var images = [ImageEntity]()
+    func deleteImage(_ image: Image) {
+        guard let imageEntity = fetchImageById(image.id) else { return }
+        context.delete(imageEntity)
+        saveContext()
+    }
+    
+    func fetchImages() -> [Image] {
+        var imageEntities = [ImageEntity]()
         let request = ImageEntity.fetchRequest()
-        
         do {
-            images = try context.fetch(request)
+            imageEntities = try context.fetch(request)
         } catch let error {
             print(error.localizedDescription)
         }
         
+        var images = [Image]()
+        for entity in imageEntities {
+            images.append(Image(entity))
+        }
+        
         return images
+    }
+    
+    func fetchImageById(_ id: String) -> ImageEntity? {
+        let request = ImageEntity.fetchRequest()
+        let predicate = NSPredicate(format: "id==%@", id)
+        request.predicate = predicate
+        return try? context.fetch(request).first
     }
 }

@@ -7,7 +7,13 @@
 
 import Foundation
 
-final class ImageMapper {
+protocol Mappable {
+    func map(_ data: Data) -> [Image]
+}
+
+final class ImageMapper {}
+
+extension ImageMapper: Mappable {
     func map(_ data: Data) -> [Image] {
         guard let fetchedImages = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]] else { return [] }
         var images = [Image]()
