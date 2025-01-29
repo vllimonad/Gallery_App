@@ -30,13 +30,13 @@ final class CoreDataManager {
 
 extension CoreDataManager: CoreDataManagerProtocol {
     func insertImage(_ image: Image){
-        guard let entity = NSEntityDescription.entity(forEntityName: "Image", in: context) else { return }
+        guard let entity = NSEntityDescription.entity(forEntityName: "ImageEntity", in: context) else { return }
         let imageEntity = ImageEntity(entity: entity, insertInto: context)
         imageEntity.id = image.id
         imageEntity.title = image.title
         imageEntity.regularUrl = image.regularUrl
         imageEntity.thumbUrl = image.thumbUrl
-        saveContext()
+        self.saveContext()
     }
     
     func deleteImage(_ image: Image) {
