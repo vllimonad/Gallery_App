@@ -18,15 +18,13 @@ final class ImageDetailsViewModel {
     private var images: [Image]
     private var favouriteImages = [Image]()
     private var imageIndex: Int
-    private var mapper: ImageMapper
     private var dataManager: CoreDataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageDetailsViewModelDelegate?
     
-    init(images: [Image], mapper: ImageMapper = ImageMapper(), imageIndex: Int, dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManager = NetworkManager()) {
+    init(images: [Image], imageIndex: Int, dataManager: CoreDataManagerProtocol = CoreDataManager(), networkManager: NetworkManager = NetworkManager()) {
         self.images = images
         self.imageIndex = imageIndex
-        self.mapper = mapper
         self.dataManager = dataManager
         self.networkManager = networkManager
         favouriteImages = dataManager.fetchImages()

@@ -23,15 +23,15 @@ final class ImageCollectionViewModel {
     private var favouriteImages = [Image]()
     private var showOnlyFavouriteImages = false
     
+    private let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
+    private let perPage = 30
     private var page = 1 {
         didSet {
             fetchImages()
         }
     }
-    private let perPage = 30
-    private let clientId = "1NCPQEX5juLF1PEgNi2TITI-XXtZVnEpKyqGCgLU1KA"
     
-    private var mapper: ImageMapper
+    private var mapper: Mappable
     private var dataManager: CoreDataManagerProtocol
     private var networkManager: NetworkManagerProtocol
     weak var delegate: ImageCollectionViewModelDelegate?

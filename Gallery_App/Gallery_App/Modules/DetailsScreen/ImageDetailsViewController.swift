@@ -66,7 +66,7 @@ final class ImageDetailsViewController: UIViewController {
         viewModel?.fetchImage()
     }
     
-    @objc func heartButtonPressed(){
+    @objc private func heartButtonPressed(){
         viewModel?.heartButtonPressed()
     }
 }

@@ -64,7 +64,7 @@ extension CoreDataManager: CoreDataManagerProtocol {
     
     func fetchImageById(_ id: String) -> ImageEntity? {
         let request = ImageEntity.fetchRequest()
-        let predicate = NSPredicate(format: "id==%@", id)
+        let predicate = NSPredicate(format: "id == %@", id)
         request.predicate = predicate
         return try? context.fetch(request).first
     }
