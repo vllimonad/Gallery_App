@@ -18,6 +18,7 @@ protocol CoreDataManagerProtocol {
 
 final class CoreDataManager {
     private lazy var context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private var entityName = "ImageEntity"
     
     private func saveContext() {
         do {
@@ -30,13 +31,13 @@ final class CoreDataManager {
 
 extension CoreDataManager: CoreDataManagerProtocol {
     func insertImage(_ image: Image){
-        guard let entity = NSEntityDescription.entity(forEntityName: "ImageEntity", in: context) else { return }
+        guard let entity = NSEntityDescription.entity(forEntityName: entityName, in: context) else { return }
         let imageEntity = ImageEntity(entity: entity, insertInto: context)
         imageEntity.id = image.id
         imageEntity.title = image.title
         imageEntity.regularUrl = image.regularUrl
         imageEntity.thumbUrl = image.thumbUrl
-        self.saveContext()
+        saveContext()
     }
     
     func deleteImage(_ image: Image) {
@@ -58,7 +59,6 @@ extension CoreDataManager: CoreDataManagerProtocol {
         for entity in imageEntities {
             images.append(Image(entity))
         }
-        
         return images
     }
     
