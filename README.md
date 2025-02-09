@@ -42,7 +42,7 @@ Implemented errors handling and displaying error messages to the user using aler
 
 ### Data storing
 
-Information about favourite images is stored locally on the user device. It is implemented by saving favourite image ID, image data and description.  
+Information about favourite images is stored locally on the user device. It is implemented by saving favourite image ID, image urls and description.  
 
 
 ## Technologies & Implementation
@@ -53,7 +53,7 @@ Information about favourite images is stored locally on the user device. It is i
 | UI framework        | UIKit       |
 | Networking          | URLSession  |
 | Multithreading      | GCD         |
-| Data persistence    | FileManager |
+| Data persistence    | Core Data   |
 | Architecture pattern| MVVM        |
 
 ## Contacts
